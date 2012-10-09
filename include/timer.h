@@ -2,6 +2,7 @@
  *  File: timer.h
  *  Last Updated: 14/02/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __TIMER_H__

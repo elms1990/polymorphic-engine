@@ -2,6 +2,7 @@
  *  File: content_manager.h
  *  Last Updated: 25/02/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __CONTENT_MANAGER_H__

@@ -2,6 +2,7 @@
  *  File: mouse.h
  *  Last Updated: 02/03/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __MOUSE_H__

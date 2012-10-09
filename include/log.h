@@ -2,6 +2,7 @@
  *  File: log.h
  *  Last Updated: 13/02/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __LOG_H__

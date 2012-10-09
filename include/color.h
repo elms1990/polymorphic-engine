@@ -2,6 +2,7 @@
  *  File: color.h
  *  Last Updated: 19/07/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __COLOR_H__
@@ -11,15 +12,9 @@ namespace Polymorphic {
 
     class Color {
         public:
-
-            /* Default Constructor */
             Color();
-
-            /* Constructor */
             Color(int r, int g, int b,
                     int a);
-
-            /* Destructor */
             ~Color();
 
             int Red;

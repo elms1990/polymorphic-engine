@@ -2,6 +2,7 @@
  *  File: input_state.h
  *  Last Updated: 16/02/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __INPUT_STATE_H__

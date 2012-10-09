@@ -2,6 +2,7 @@
  *  File: keyboard.h
  *  Last Updated: 09/08/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __KEYBOARD_H__

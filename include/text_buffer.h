@@ -1,3 +1,10 @@
+/*
+ *  File: text_buffer.h
+ *  Last Updated: 09/10/2012
+ *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
+ */
+
 #ifndef __TEXT_BUFFER_H__
 #define __TEXT_BUFFER_H__
 
@@ -33,4 +40,4 @@ namespace Polymorphic {
     };
 }
 
-#endif
+#endif /* __TEXT_BUFFER__ */

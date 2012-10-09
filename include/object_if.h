@@ -2,6 +2,7 @@
  *  File: object_if.h
  *  Last Updated: 19/08/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __OBJECT_IF_H__

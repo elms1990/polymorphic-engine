@@ -2,6 +2,7 @@
  *  File: keys.h
  *  Last Updated: 18/08/2012
  *  Coded By: Erick Luis Moraes de Sousa
+ *  Contact: elms1990 (at) gmail.com
  */
 
 #ifndef __KEYS_H__
