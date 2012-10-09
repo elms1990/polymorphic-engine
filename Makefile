@@ -27,7 +27,7 @@ W32LINKER= i586-mingw32msvc-ar
 W32CXXFLAGS= $(CXXFLAGS)
 W32LDFLAGS= -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lGL
 
-linux: linux-engine linux-tests docs
+linux: linux-engine
 
 linux-engine:
 	@echo
@@ -35,15 +35,7 @@ linux-engine:
 	$(LCXX) $(SRC) -c $(CXXFLAGS) $(INCLUDE) $(LDFLAGS)
 	$(LLINKER) cq $(LIBNAME) *.o
 
-linux-tests:
-	cd $(TESTS); \
-	for tt in *; do \
-		cd $$tt; \
-		make linux; \
-		cd ..; \
-	done
-
-w32: w32-engine w32-tests docs
+w32: w32-engine
 
 w32-engine: 
 	@echo
@@ -51,27 +43,7 @@ w32-engine:
 	$(W32CXX) $(SRC) -c $(W32CXXFLAGS) $(INCLUDE) $(W32LDFLAGS)
 	$(W32LINKER) cq $(LIBNAME) *.o
 
-w32-tests:
-	cd $(TESTS); \
-	for tt in *; do \
-		cd $$tt; \
-		make w32; \
-		cd ..; \
-	done
-
-docs:
-	@echo
-	@echo \#\#\# COMPILING LATEX DOCUMENTATION \#\#\#
-	cd doc/; pdflatex doc.tex
-
 clean:
 	rm -f *.o
 	rm -f *.a
 	rm -f log.txt
-	cd doc/; rm -f doc.log doc.aux doc.pdf
-	cd $(TESTS); \
-	for proj in *; do \
-		cd $$proj; \
-		make clean; \
-		cd ..; \
-	done
