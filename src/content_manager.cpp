@@ -11,16 +11,16 @@
 
 using namespace Polymorphic;
 
-Resource* ContentManager::LoadMusic(const char* name, const char* path) {
+Music* ContentManager::LoadMusic(const char* name, const char* path) {
     Resource* exist = GetResource(name);
     if (exist != NULL)
-        return exist;
+        return (Music*)exist;
 
     Mix_Music* music = Mix_LoadMUS(path);
 
     if (music != NULL) {
-        Resource* r = (Resource*)(new Music(music, name));
-        resources[name] = r;
+        Music* r = (new Music(music, name));
+        resources[name] = (Resource*)r;
         return r;
     } else {
         Engine::log.LogMessage("Error", "Could not find file: " + (string)path);
@@ -28,16 +28,16 @@ Resource* ContentManager::LoadMusic(const char* name, const char* path) {
     }
 }
 
-Resource* ContentManager::LoadSoundEffect(const char* name, const char* path) {
+SoundEffect* ContentManager::LoadSoundEffect(const char* name, const char* path) {
     Resource* exist = GetResource(name);
     if (exist != NULL)
-        return exist;
+        return (SoundEffect*)exist;
 
     Mix_Chunk* snd = Mix_LoadWAV(path);
 
     if (snd != NULL) {
-        Resource* r = (Resource*)(new SoundEffect(snd, name));
-        resources[name] = r;
+        SoundEffect* r = (new SoundEffect(snd, name));
+        resources[name] = (Resource*)r;
         return r;
     } else {
         Engine::log.LogMessage("Error", "Could not find file: " + (string)path);
@@ -45,11 +45,11 @@ Resource* ContentManager::LoadSoundEffect(const char* name, const char* path) {
     }
 }
 
-Resource* ContentManager::LoadImage(const char* name, const char* path) {
+Texture* ContentManager::LoadImage(const char* name, const char* path) {
     Resource* exist = GetResource(name);
 
     if (exist != NULL)
-        return exist;
+        return (Texture*)exist;
 
     SDL_Surface* text = IMG_Load(path);
 
@@ -57,8 +57,8 @@ Resource* ContentManager::LoadImage(const char* name, const char* path) {
         SDL_Surface* tt = SDL_DisplayFormatAlpha(text);
         SDL_FreeSurface(text);
 
-        Resource* r = (Resource*)(new Texture(tt, name));
-        resources[name] = r;
+        Texture* r = (new Texture(tt, name));
+        resources[name] = (Resource*)r;
         return r;
     } else {
         Engine::log.LogMessage("Error", "Could not find file: " + (string)path);
@@ -66,10 +66,10 @@ Resource* ContentManager::LoadImage(const char* name, const char* path) {
     }
 }
 
-Resource* ContentManager::LoadFont(const char* name, const char* path, int font_size) {
+Font* ContentManager::LoadFont(const char* name, const char* path, int font_size) {
     Resource* exist = GetResource(name);
     if (exist != NULL)
-        return exist;
+        return (Font*)exist;
 
     TTF_Font* ft = TTF_OpenFont(path, font_size);
 
@@ -78,8 +78,8 @@ Resource* ContentManager::LoadFont(const char* name, const char* path, int font_
         return NULL;
     }
 
-    Resource* r = (Resource*)(new Font(ft, name, font_size));
-    resources[name] = r;
+    Font* r = (new Font(ft, name, font_size));
+    resources[name] = (Resource*)r;
     return r;
 }
 

@@ -37,10 +37,10 @@ namespace Polymorphic {
             void Initialize();
             void Shutdown();
 
-            Resource* LoadImage(const char* name, const char* path);
-            Resource* LoadFont(const char* name, const char* path, int font_size);
-            Resource* LoadSoundEffect(const char* name, const char* path);
-            Resource* LoadMusic(const char* name, const char* path);
+            Texture* LoadImage(const char* name, const char* path);
+            Font* LoadFont(const char* name, const char* path, int font_size);
+            SoundEffect* LoadSoundEffect(const char* name, const char* path);
+            Music* LoadMusic(const char* name, const char* path);
 
             void UnloadResource(const char* name);
             Resource* GetResource(const char* name);
