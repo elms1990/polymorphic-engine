@@ -25,7 +25,7 @@ Graphics::~Graphics() {
 
 int Graphics::Initialize() {
     EngineAttributes eat = Engine::GetAttributes();
-    SDL_putenv("SDL_VIDEO_CENTERED=1");
+    SDL_putenv((char*)"SDL_VIDEO_CENTERED=1");
     if (CreateContext(eat.width, eat.height, eat.fullscreen) == -1)
         return -1;
 
