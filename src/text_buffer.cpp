@@ -13,7 +13,7 @@ TextBuffer::TextBuffer() {
     c = Color(0xff, 0xff, 0xff, 0xff);
 }
 
-TextBuffer::TextBuffer(Font* f, const char* text) {
+TextBuffer::TextBuffer(Font *f, char *text) {
     dirty = false;
     this->f = f;
     this->text = text;
@@ -26,12 +26,15 @@ TextBuffer::TextBuffer(Font* f, const char* text) {
 TextBuffer::~TextBuffer() {
 }
 
-void TextBuffer::SetDisplayText(const char* text) {
+void TextBuffer::SetDisplayText(char *text) {
     this->text = text;
     dirty = true;
 }
 
-void TextBuffer::SetDisplayFont(Font* f) {
+void TextBuffer::SetDisplayFont(Font *f) {
+    if (this->f == NULL) {
+        size = f->GetFontSize();
+    }
     this->f = f;
     dirty = true;
 }
@@ -72,4 +75,8 @@ float TextBuffer::GetScaleFactor() {
 
 int TextBuffer::GetFontSize() {
     return size; 
+}
+
+char* TextBuffer::GetText() {
+    return text;
 }

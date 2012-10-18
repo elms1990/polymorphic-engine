@@ -9,7 +9,6 @@
 #define __ENGINE_H__
 
 /* Engine includes */
-#include "actor_if.h"
 #include "addons.h"
 #include "content_manager.h"
 #include "game_if.h"
@@ -20,7 +19,6 @@
 #include "log.h"
 #include "math_helper.h"
 #include "mouse.h"
-#include "object_if.h"
 #include "rectanglef.h"
 #include "resource.h"
 #include "text_buffer.h"
@@ -58,7 +56,7 @@ namespace Polymorphic {
              * @params: None.
              * @return: Nothing.
              */
-            static void Run(GameInterface* gi);
+            static void Run(GameIF* gi);
 
             /* @name: Initialized
              * @descr: Checks whether or not the engine was
@@ -136,7 +134,7 @@ namespace Polymorphic {
             static bool initialized;
             static SDL_Surface *opt_icon;
 
-            static GameInterface *game;
+            static GameIF *game;
     };
 
 }

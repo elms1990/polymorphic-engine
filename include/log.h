@@ -9,7 +9,6 @@
 #define __LOG_H__
 
 #include <fstream>
-#include <string>
 using std::fstream;
 using std::string;
 

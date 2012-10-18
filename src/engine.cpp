@@ -14,7 +14,7 @@ bool Engine::SDL_MIXER = false;
 bool Engine::LOG = false;
 bool Engine::initialized = false;
 SDL_Surface* Engine::opt_icon = NULL;
-GameInterface* Engine::game = NULL;
+GameIF* Engine::game = NULL;
 EngineAttributes Engine::eat = { 800, 600, false };
 
 /* Modules */
@@ -143,7 +143,7 @@ int Engine::Initialize() {
     return 0;
 }
 
-void Engine::Run(GameInterface* gi) {
+void Engine::Run(GameIF *gi) {
     game = gi; 
 
     //Engine initialize

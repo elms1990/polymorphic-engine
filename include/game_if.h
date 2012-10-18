@@ -10,7 +10,7 @@
 
 namespace Polymorphic {
 
-    class GameInterface {
+    class GameIF {
         public:
 
             /* @name: Initialize
