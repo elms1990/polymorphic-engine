@@ -33,6 +33,8 @@
 
 namespace Polymorphic {
 
+    #define DEFAULT_FONT "DEF_FONT"
+
     typedef enum {
         //window initial width
         WINDOW_WIDTH,

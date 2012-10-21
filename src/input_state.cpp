@@ -6,8 +6,8 @@
 
 #include "input_state.h"
 #include "log.h"
-#include <algorithm>
 #include <list>
+#include <algorithm>
 #include <map>
 
 using namespace std;

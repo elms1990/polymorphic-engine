@@ -80,3 +80,7 @@ int TextBuffer::GetFontSize() {
 char* TextBuffer::GetText() {
     return text;
 }
+
+const char* TextBuffer::GetFontName() {
+    return f->GetName();
+}

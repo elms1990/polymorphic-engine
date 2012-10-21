@@ -69,6 +69,7 @@ void Engine::Update(int deltaTime) {
 
 void Engine::Render(int deltaTime) {
     game->Render(deltaTime);
+    graphics.DrawBatch();
 }
 
 int Engine::Initialize() {

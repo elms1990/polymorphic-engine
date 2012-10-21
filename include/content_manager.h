@@ -39,6 +39,7 @@ namespace Polymorphic {
 
             Texture* LoadImage(const char* name, const char* path);
             Font* LoadFont(const char* name, const char* path, int font_size);
+            Font* LoadFont(const char* name, const char* path);
             SoundEffect* LoadSoundEffect(const char* name, const char* path);
             Music* LoadMusic(const char* name, const char* path);
 

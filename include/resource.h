@@ -18,19 +18,13 @@ namespace Polymorphic {
 
     class Resource {
         public:
-
-            /* Constructor */
             Resource(void* res, const char* name);
-
-            /* Pure Virtual Destructor */
             virtual ~Resource() = 0;
 
-            // Getters
             void* GetResource() { return res; }
             const char* GetName() { return name; }
 
         protected:
-            /* void pointer to the data information */
             void* res;
             const char* name;
 
@@ -71,14 +65,11 @@ namespace Polymorphic {
 
             bool Loop;
 
-            //Setters
             //Volume range [0,128]
             void SetVolume(int volume);
 
-            //Getters
             int GetVolume();
 
-            //Control
             void Play();
             void Pause();
             void Resume();
@@ -95,14 +86,11 @@ namespace Polymorphic {
 
             bool Loop;
 
-            //Setters
             //Volume range [0,128]
             void SetVolume(int volume);
 
-            //Getters
             int GetVolume();
 
-            //Sound control
             void Play();
             void Play(int milisecs);
             void Pause();

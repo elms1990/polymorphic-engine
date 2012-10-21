@@ -15,12 +15,23 @@
 #include "rectanglef.h"
 #include "color.h"
 #include "text_buffer.h"
+#include <list>
+
+using std::list;
 
 namespace Polymorphic {
 
+    #define MAX_LAYERS (6)
+    #define HIDDEN_LAYER (-1)
+
+    typedef struct _dunit {
+        Texture *t;
+        Rectanglef src;
+        Rectanglef dst;
+    } DrawableUnit;
+
     class Graphics {
         public:
-
             /* Default Constructor */
             Graphics();
 
@@ -54,6 +65,17 @@ namespace Polymorphic {
              *      @src: Source texture.
              *      @dest_x: X coord in the screen.
              *      @dest_y: Y coord in the screen.
+             *      @layer: layer that the object will be drawn.
+             * @return: Nothing.
+             */
+            void Draw(Texture* src, float dest_x, float dest_y, int layer);
+
+            /* @name: Draw
+             * @descr: Draw a texture on the screen.
+             * @params:
+             *      @src: Source texture.
+             *      @dest_x: X coord in the screen.
+             *      @dest_y: Y coord in the screen.
              * @return: Nothing.
              */
             void Draw(Texture* src, float dest_x, float dest_y);
@@ -68,7 +90,7 @@ namespace Polymorphic {
              *      @color: Message color.
              * @return: Nothing.
              */
-            void DrawText(Font* font, const char* text, int x, int y, Color color);
+            void DrawText(Font* font, const char* text, float x, float y, Color color);
 
             /* @name: DrawText
              * @descr: Draw a text message on the screen.
@@ -80,7 +102,20 @@ namespace Polymorphic {
              *      @color: Message color.
              * @return: Nothing.
              */
-            void DrawText(TextBuffer* t, int x, int y);
+            void DrawText(TextBuffer* t, float x, float y);
+
+            /* @name: DrawText
+             * @descr: Draw a text message on the screen.
+             * @params:
+             *      @font: Font that will be used to draw.
+             *      @text: Message that will be displayed.
+             *      @dest_x: X coord in the screen.
+             *      @dest_y: Y coord in the screen.
+             *      @layer: layer where the text will be displayed.
+             *      @color: Message color.
+             * @return: Nothing.
+             */
+            void DrawText(TextBuffer* t, float x, float y, int layer);
 
             /* @name: SetWindowTitle
              * @descr: Changes the Window title.
@@ -135,6 +170,7 @@ namespace Polymorphic {
             int Initialize();
 
             GLuint LoadShader(const char* path);
+            void DrawBatch();
 
             //Getters
             int GetWidth() { return width; }
@@ -145,6 +181,8 @@ namespace Polymorphic {
             SDL_Surface* scr;
             int width;
             int height;
+
+            list<DrawableUnit> batch[MAX_LAYERS];
 
             //scale factors base on default screen dimensions
             float sw;
@@ -160,6 +198,5 @@ namespace Polymorphic {
              */
             int CreateContext(int w, int h, bool fscreen);
     };
-
 }
 #endif /* __GRAPHICS_H__ */

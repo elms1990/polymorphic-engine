@@ -28,6 +28,7 @@ namespace Polymorphic {
             float GetScaleFactor();
             int GetFontSize();
             char* GetText();
+            const char* GetFontName();
 
         private:
             inline void UpdateBuffer();

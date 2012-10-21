@@ -8,7 +8,9 @@
 #include "engine.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <algorithm>
 
+using std::sort;
 using namespace Polymorphic;
 
 #define DEFAULT_WINDOW_FLAGS (SDL_HWSURFACE | SDL_OPENGL)
@@ -45,116 +47,75 @@ bool Graphics::ResizeWindow(int new_w, int new_h, bool full_screen) {
     return true;
 }
 
+void Graphics::DrawBatch() {
+    int i;
+    //draw
+    
+    for (i = 1; i < MAX_LAYERS; i++) {
+        for (list<DrawableUnit>::iterator it = batch[i].begin(); it != batch[i].end();
+                it++) {
+            glBindTexture(GL_TEXTURE_2D, it->t->GetID());
+
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+            glBegin(GL_QUADS);
+
+            //bottom-left
+            glTexCoord2f(it->src.X/it->t->Width, (it->src.Y)/it->t->Height);
+            glScalef(sw, sh, 1.f);
+            glVertex3f(it->dst.X, it->dst.Y, it->dst.Z);
+            glLoadIdentity();
+
+            //bottom-right
+            glTexCoord2f((it->src.X+it->src.Width)/it->t->Width,
+                    it->src.Y/it->t->Height);
+            glScalef(sw, sh, 1.f);
+            glVertex3f(it->dst.X + it->dst.Width, it->dst.Y, it->dst.Z);
+            glLoadIdentity();
+
+            //top-right
+            glTexCoord2f((it->src.X+it->src.Width)/it->t->Width, 
+                    (it->src.Y+it->src.Height)/it->t->Height);
+            glScalef(sw, sh, 1.f);
+            glVertex3f((it->dst.X + it->dst.Width), (it->dst.Y + it->dst.Height), 
+                    it->dst.Z);
+            glLoadIdentity();
+
+            //top-left
+            glTexCoord2f(it->src.X/it->t->Width, 
+                    (it->src.Y+it->src.Height)/it->t->Height);
+            glScalef(sw, sh, 1.f);
+            glVertex3f(it->dst.X, (it->dst.Y + it->dst.Height), it->dst.Z);
+            glLoadIdentity();
+            glEnd();
+        }
+        batch[i].clear();
+    }
+    batch[0].clear();
+}
+
 void Graphics::Draw(Texture* src, Rectanglef src_rect, Rectanglef dst_rect) {
-    glBindTexture(GL_TEXTURE_2D, src->GetID());
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    glBegin(GL_QUADS);
-
-    //bottom-left
-    glTexCoord2f(src_rect.X/src->Width, (src_rect.Y)/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f(dst_rect.X, dst_rect.Y, 0.f);
-    glLoadIdentity();
-
-    //bottom-right
-    glTexCoord2f((src_rect.X+src_rect.Width)/src->Width,
-            src_rect.Y/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f(dst_rect.X + dst_rect.Width, dst_rect.Y, 0.f);
-    glLoadIdentity();
-
-    //top-right
-    glTexCoord2f((src_rect.X+src_rect.Width)/src->Width, 
-            (src_rect.Y+src_rect.Height)/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f((dst_rect.X + dst_rect.Width), (dst_rect.Y + dst_rect.Height), 
-            0.f);
-    glLoadIdentity();
-
-    //top-left
-    glTexCoord2f(src_rect.X/src->Width, 
-            (src_rect.Y+src_rect.Height)/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f(dst_rect.X, (dst_rect.Y + dst_rect.Height), 0.f);
-    glLoadIdentity();
-    glEnd();
+    DrawableUnit du = { du.t = src, du.src = src_rect, du.dst = dst_rect };
+    batch[(int)(dst_rect.Z)+1].push_back(du);
 }
 
 void Graphics::Draw(Texture* src, Rectanglef src_rect, float dest_x, float dest_y) {
-    glBindTexture(GL_TEXTURE_2D, src->GetID());
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    glBegin(GL_QUADS);
-
-    //bottom-left
-    glTexCoord2f(src_rect.X/src->Width, (src_rect.Y)/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f(dest_x, dest_y, 0.f);
-    glLoadIdentity();
-
-    //bottom-right
-    glTexCoord2f((src_rect.X+src_rect.Width)/src->Width,
-            src_rect.Y/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f((dest_x + src_rect.Width), dest_y, 0.f);
-    glLoadIdentity();
-
-    //top-right
-    glTexCoord2f((src_rect.X+src_rect.Width)/src->Width, 
-            (src_rect.Y+src_rect.Height)/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f((dest_x + src_rect.Width), (dest_y + src_rect.Height), 
-            0.f);
-    glLoadIdentity();
-
-    //top-left
-    glTexCoord2f(src_rect.X/src->Width, 
-            (src_rect.Y+src_rect.Height)/src->Height);
-    glScalef(sw, sh, 1.f);
-    glVertex3f(dest_x, (dest_y + src_rect.Height), 0.f);
-    glLoadIdentity();
-    glEnd();
-
+    Draw(src, src_rect, Rectanglef(dest_x, dest_y, src_rect.Z, 0, 0));
 }
 
 void Graphics::Draw(Texture* src, float dest_x, float dest_y) {
-    glBindTexture(GL_TEXTURE_2D, src->GetID());
+    Draw(src, Rectanglef(0.f, 0.f, src->Width, src->Height), Rectanglef(dest_x, dest_y, src->Width, src->Height));
+}
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    glBegin(GL_QUADS);
-
-    //bottom-left
-    glTexCoord2f(0, 0);
-    glScalef(sw, sh, 1.f);
-    glVertex3f(dest_x, dest_y, 0.f);
-    glLoadIdentity();
-
-    //bottom-right
-    glTexCoord2f(1, 0);
-    glScalef(sw, sh, 1.f);
-    glVertex3f((dest_x + src->Width), dest_y, 0.f);
-    glLoadIdentity();
-
-    //top-right
-    glTexCoord2f(1, 1);
-    glScalef(sw, sh, 1.f);
-    glVertex3f((dest_x + src->Width), (dest_y + src->Height), 0.f);
-    glLoadIdentity();
-
-    //top-left
-    glTexCoord2f(0, 1);
-    glVertex3f(dest_x, (dest_y + src->Height), 0.f);
-    glScalef(sw, sh, 1.f);
-    glLoadIdentity();
-    glEnd();
+void Graphics::Draw(Texture* src, float dest_x, float dest_y, int layer) {
+   Draw(src, Rectanglef(0.f, 0.f, 0.f, src->Width, src->Height), 
+           Rectanglef(dest_x, dest_y, (float)layer, src->Width, src->Height));
 }
 
 void Graphics::Flush() {
     SDL_GL_SwapBuffers();
 }
 
-void Graphics::DrawText(Font* font, const char* text, int x, int y, Color color) {
+void Graphics::DrawText(Font* font, const char* text, float x, float y, Color color) {
     if (font != NULL) {
         SDL_Color scl = { scl.r = color.Red, scl.b = color.Blue, scl.g = color.Green };
         SDL_Surface* txt = TTF_RenderUTF8_Blended((TTF_Font*)font->GetResource(),
@@ -167,9 +128,16 @@ void Graphics::DrawText(Font* font, const char* text, int x, int y, Color color)
     }
 }
 
-void Graphics::DrawText(TextBuffer* t, int x, int y) {
+void Graphics::DrawText(TextBuffer* t, float x, float y) {
     Draw(t->GetBuffer(), Rectanglef(0, 0, t->GetBuffer()->Width, 
                 t->GetBuffer()->Height), Rectanglef(x, y, 
+                t->GetBuffer()->Width*t->GetScaleFactor(), 
+                t->GetBuffer()->Height*t->GetScaleFactor()));
+}
+
+void Graphics::DrawText(TextBuffer* t, float x, float y, int layer) {
+    Draw(t->GetBuffer(), Rectanglef(0, 0, t->GetBuffer()->Width, 
+                t->GetBuffer()->Height), Rectanglef(x, y, (float)layer,
                 t->GetBuffer()->Width*t->GetScaleFactor(), 
                 t->GetBuffer()->Height*t->GetScaleFactor()));
 }

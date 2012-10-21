@@ -18,6 +18,15 @@ Rectanglef::Rectanglef() {
 Rectanglef::Rectanglef(float x, float y, int w, int h) {
     X = x;
     Y = y;
+    Z = 0.f;
+    Width = w;
+    Height = h;
+}
+
+Rectanglef::Rectanglef(float x, float y, float z, int w, int h) {
+    X = x;
+    Y = y;
+    Z = z;
     Width = w;
     Height = h;
 }
