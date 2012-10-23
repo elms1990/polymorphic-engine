@@ -50,7 +50,8 @@ bool Graphics::ResizeWindow(int new_w, int new_h, bool full_screen) {
 void Graphics::DrawBatch() {
     int i;
     //draw
-    
+   
+    glScalef(sw, sh, 1.f);
     for (i = 1; i < MAX_LAYERS; i++) {
         for (list<DrawableUnit>::iterator it = batch[i].begin(); it != batch[i].end();
                 it++) {
@@ -61,54 +62,53 @@ void Graphics::DrawBatch() {
 
             //bottom-left
             glTexCoord2f(it->src.X/it->t->Width, (it->src.Y)/it->t->Height);
-            glScalef(sw, sh, 1.f);
-            glVertex3f(it->dst.X, it->dst.Y, it->dst.Z);
-            glLoadIdentity();
+            glVertex3f(it->dst.X, it->dst.Y, 0.f);
 
             //bottom-right
             glTexCoord2f((it->src.X+it->src.Width)/it->t->Width,
                     it->src.Y/it->t->Height);
-            glScalef(sw, sh, 1.f);
-            glVertex3f(it->dst.X + it->dst.Width, it->dst.Y, it->dst.Z);
-            glLoadIdentity();
+            glVertex3f(it->dst.X + it->dst.Width, it->dst.Y, 0.f);
 
             //top-right
             glTexCoord2f((it->src.X+it->src.Width)/it->t->Width, 
                     (it->src.Y+it->src.Height)/it->t->Height);
-            glScalef(sw, sh, 1.f);
             glVertex3f((it->dst.X + it->dst.Width), (it->dst.Y + it->dst.Height), 
-                    it->dst.Z);
-            glLoadIdentity();
+                    0.f);
 
             //top-left
             glTexCoord2f(it->src.X/it->t->Width, 
                     (it->src.Y+it->src.Height)/it->t->Height);
-            glScalef(sw, sh, 1.f);
-            glVertex3f(it->dst.X, (it->dst.Y + it->dst.Height), it->dst.Z);
-            glLoadIdentity();
+            glVertex3f(it->dst.X, (it->dst.Y + it->dst.Height), 0.f);
             glEnd();
         }
         batch[i].clear();
     }
     batch[0].clear();
+    glLoadIdentity();
 }
 
 void Graphics::Draw(Texture* src, Rectanglef src_rect, Rectanglef dst_rect) {
-    DrawableUnit du = { du.t = src, du.src = src_rect, du.dst = dst_rect };
-    batch[(int)(dst_rect.Z)+1].push_back(du);
+    if (src != NULL) {
+        DrawableUnit du = { du.t = src, du.src = src_rect, du.dst = dst_rect };
+        batch[(int)(dst_rect.Z)+1].push_back(du);
+    }
 }
 
 void Graphics::Draw(Texture* src, Rectanglef src_rect, float dest_x, float dest_y) {
-    Draw(src, src_rect, Rectanglef(dest_x, dest_y, src_rect.Z, 0, 0));
+    if (src != NULL)
+        Draw(src, src_rect, Rectanglef(dest_x, dest_y, src_rect.Z, 0, 0));
 }
 
 void Graphics::Draw(Texture* src, float dest_x, float dest_y) {
-    Draw(src, Rectanglef(0.f, 0.f, src->Width, src->Height), Rectanglef(dest_x, dest_y, src->Width, src->Height));
+    if (src != NULL)
+        Draw(src, Rectanglef(0.f, 0.f, src->Width, src->Height), Rectanglef(dest_x, dest_y, src->Width, src->Height));
 }
 
 void Graphics::Draw(Texture* src, float dest_x, float dest_y, int layer) {
-   Draw(src, Rectanglef(0.f, 0.f, 0.f, src->Width, src->Height), 
-           Rectanglef(dest_x, dest_y, (float)layer, src->Width, src->Height));
+    if (src != NULL) {
+        Draw(src, Rectanglef(0.f, 0.f, 0.f, src->Width, src->Height), 
+                Rectanglef(dest_x, dest_y, (float)layer, src->Width, src->Height));
+    }
 }
 
 void Graphics::Flush() {
