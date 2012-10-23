@@ -62,23 +62,22 @@ void Graphics::DrawBatch() {
 
             //bottom-left
             glTexCoord2f(it->src.X/it->t->Width, (it->src.Y)/it->t->Height);
-            glVertex3f(it->dst.X, it->dst.Y, 0.f);
+            glVertex2f(it->dst.X, it->dst.Y);
 
             //bottom-right
             glTexCoord2f((it->src.X+it->src.Width)/it->t->Width,
                     it->src.Y/it->t->Height);
-            glVertex3f(it->dst.X + it->dst.Width, it->dst.Y, 0.f);
+            glVertex2f(it->dst.X + it->dst.Width, it->dst.Y);
 
             //top-right
             glTexCoord2f((it->src.X+it->src.Width)/it->t->Width, 
                     (it->src.Y+it->src.Height)/it->t->Height);
-            glVertex3f((it->dst.X + it->dst.Width), (it->dst.Y + it->dst.Height), 
-                    0.f);
+            glVertex2f((it->dst.X + it->dst.Width), (it->dst.Y + it->dst.Height));
 
             //top-left
             glTexCoord2f(it->src.X/it->t->Width, 
                     (it->src.Y+it->src.Height)/it->t->Height);
-            glVertex3f(it->dst.X, (it->dst.Y + it->dst.Height), 0.f);
+            glVertex2f(it->dst.X, (it->dst.Y + it->dst.Height));
             glEnd();
         }
         batch[i].clear();
@@ -113,19 +112,6 @@ void Graphics::Draw(Texture* src, float dest_x, float dest_y, int layer) {
 
 void Graphics::Flush() {
     SDL_GL_SwapBuffers();
-}
-
-void Graphics::DrawText(Font* font, const char* text, float x, float y, Color color) {
-    if (font != NULL) {
-        SDL_Color scl = { scl.r = color.Red, scl.b = color.Blue, scl.g = color.Green };
-        SDL_Surface* txt = TTF_RenderUTF8_Blended((TTF_Font*)font->GetResource(),
-                text, scl);
-        
-        if (txt != NULL) {
-            Texture t = Texture(txt, "");
-            Draw(&t, x, y);
-        }
-    }
 }
 
 void Graphics::DrawText(TextBuffer* t, float x, float y) {

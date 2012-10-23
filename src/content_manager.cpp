@@ -67,7 +67,7 @@ Texture* ContentManager::LoadImage(const char* name, const char* path) {
 }
 
 Font* ContentManager::LoadFont(const char *name, const char *path) {
-    return LoadFont(name, path, 128);
+    return LoadFont(name, path, 40);
 }
 
 Font* ContentManager::LoadFont(const char* name, const char* path, int font_size) {

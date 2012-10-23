@@ -76,6 +76,8 @@ void Texture::SurfaceToTexture() {
     glBindTexture(GL_TEXTURE_2D, tid);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 //    if (rescale) {
 //        #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 //            rmask = 0xff000000;

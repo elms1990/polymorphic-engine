@@ -14,9 +14,9 @@ TextBuffer::TextBuffer() {
 }
 
 TextBuffer::TextBuffer(Font *f, char *text) {
-    dirty = false;
     this->f = f;
     this->text = text;
+    dirty = true;
     size = f->GetFontSize();
     t = NULL;
     c = Color(0xff, 0xff, 0xff, 0xff);

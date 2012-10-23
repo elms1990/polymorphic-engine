@@ -85,18 +85,6 @@ namespace Polymorphic {
             void Draw(Texture* src, float dest_x, float dest_y);
 
             /* @name: DrawText
-             * @descr: Adds the text to the drawing batch.
-             * @params:
-             *      @font: Font that will be used to draw.
-             *      @text: Message that will be displayed.
-             *      @dest_x: X coord in the screen.
-             *      @dest_y: Y coord in the screen.
-             *      @color: Message color.
-             * @return: Nothing.
-             */
-            void DrawText(Font* font, const char* text, float x, float y, Color color);
-
-            /* @name: DrawText
              * @descr: Adds the text to the drawing batch. Uses default layer
              * (layer = 0) when drawing.
              * @params:
