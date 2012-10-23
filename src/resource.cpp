@@ -38,22 +38,7 @@ void Texture::SurfaceToTexture() {
     GLenum texture_format;
     GLint ncolors;
     SDL_Surface* s = (SDL_Surface*)res;
-//    SDL_Surface* newsfc = NULL;
-//    int p2_w = s->w, p2_h = s->h;
-//    bool rescale = false;
-//    int rmask, gmask, bmask, amask;
 
-    /* Convert to a power of 2 surface */
-//    if ((s->w & (s->w-1))) {
-//        p2_w = (int)(pow(2, ceil(log2(s->w))));
-//        rescale = true;
-//    }
-//
-//    if ((s->h & (s->h-1))) {
-//        p2_h = (int)(pow(2, ceil(log2(s->h))));
-//        rescale = true;
-//    }
-//
     /* Convert SDL_Surface to OpenGL Texture */
     ncolors = s->format->BytesPerPixel;
     if (ncolors == 4) {
@@ -78,32 +63,9 @@ void Texture::SurfaceToTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//    if (rescale) {
-//        #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-//            rmask = 0xff000000;
-//            gmask = 0x00ff0000;
-//            bmask = 0x0000ff00;
-//            amask = 0x000000ff;
-//        #else
-//            amask = 0xff000000;
-//            bmask = 0x00ff0000;
-//            gmask = 0x0000ff00;
-//            rmask = 0x000000ff;
-//        #endif
-//
-//        newsfc = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA, p2_w, p2_h, 32, rmask, gmask, bmask, amask);
-//        SDL_BlitSurface(s, NULL, newsfc, NULL);
-////        SDL_SetAlpha(newsfc, SDL_RLEACCEL | SDL_SRCALPHA, s->format->alpha);
-//        glTexImage2D(GL_TEXTURE_2D, 0, ncolors, newsfc->w, newsfc->h, 0,
-//                texture_format, GL_UNSIGNED_BYTE, newsfc->pixels);
-//    } else {
-        glTexImage2D(GL_TEXTURE_2D, 0, ncolors, s->w, s->h, 0,
-                texture_format, GL_UNSIGNED_BYTE, s->pixels);
-//    }
 
-//    if (rescale) {
-//        SDL_FreeSurface(newsfc);
-//    }
+    glTexImage2D(GL_TEXTURE_2D, 0, ncolors, s->w, s->h, 0,
+                texture_format, GL_UNSIGNED_BYTE, s->pixels);
 
     this->tid = tid;
 }
@@ -251,4 +213,3 @@ void Music::Stop() {
         halted = true;
     }
 }
-
