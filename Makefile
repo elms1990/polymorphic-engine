@@ -15,7 +15,6 @@ INCLUDE= -Iinclude
 
 # LINUX #
 LCXX= g++
-LLINKER= ar
 LCXXFLAGS= $(CXXFLAGS)
 LLDFLAGS= $(LDFLAGS)
 
@@ -30,8 +29,10 @@ linux: linux-engine
 linux-engine:
 	@echo
 	@echo \#\#\# COMPILING ENGINE FOR LINUX \#\#\#
-	$(LCXX) $(SRC) -c $(CXXFLAGS) $(INCLUDE) $(LDFLAGS)
-	$(LLINKER) cq $(LIBNAME) *.o
+	$(LCXX) $(SRC) -fPIC -shared -o libpolymorphic.so $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) 
+
+install:
+	cp libpolymorphic.so /usr/lib
 
 w32: w32-engine
 
