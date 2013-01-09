@@ -9,7 +9,6 @@
 #define __ENGINE_H__
 
 /* Engine includes */
-#include "addons.h"
 #include "content_manager.h"
 #include "game_if.h"
 #include "graphics.h"
@@ -33,21 +32,11 @@
 
 namespace Polymorphic {
 
-    #define DEFAULT_FONT "DEF_FONT"
-
-    typedef enum {
-        //window initial width
-        WINDOW_WIDTH,
-        //window initial height
-        WINDOW_HEIGHT,
-        //start on fscreen mode
-        WINDOW_FSCREEN
-    } EngineParam;
-
     typedef struct _eattrib {
         int width;
         int height;
         bool fullscreen;
+        int fps;
     } EngineAttributes;
 
     class Engine {
@@ -68,43 +57,32 @@ namespace Polymorphic {
              */
             static bool Initialized();
 
-            /* @name: RegisterAddOn
-             * @descr: Registers a game addon. Automatically
-             * calls the addon methods.
+            /* @name: SetViewport
+             * @descr: Sets the viewport size.
              * @params:
-             *      @mod: pointer to module object.
-             * @return: nothing.
+             *      @width: viewport's width.
+             *      @height: viewport's height.
+             * @return: Nothing.
              */
-            static void RegisterAddOn(AddOn *mod);
-            
-            /* @name: UnregisterAddOn
-             * @descr: Unregisters a game module.
-             * @params:
-             *      @name: module name.
-             * @return: nothing.
-             */
-            static void UnregisterAddOn(const char *name);
+            static void SetViewport(int width, int height);
 
-            /* @name: SetAttribute
-             * @descr: Sets a game engine setting.
-             * This is useful for initializing the
-             * engine with a desired parater set.
-             * @params:
-             *      @param: Setting to be updated;
-             *      @value: New setting's value.
-             * @return: nothing.
+            /* @name: StartOnFullScreen
+             * @descr: Enable/Disable the window initializing in fullscreen
+             * mode.
+             * @params: 
+             *      b: Flag to enable/disable fullscreen mode.
+             * @return: Nothing.
              */
-            static void SetAttribute(EngineParam param, int value);
+            static void StartOnFullScreen(bool b);
 
-            /* @name: SetAttribute
-             * @descr: Sets a game engine setting.
-             * This is useful for initializing the
-             * engine with a desired parater set.
+            /* @name: SetFrameRateCap
+             * @descr: Sets the frame rate upper limit.
              * @params:
-             *      @e: Struct containing engine settings;
-             * @return: nothing.
+             *      fps: non-zero positive integer value.
+             *      Default is 60 fps.
+             * @return: Nothing.
              */
-            static void SetAttribute(EngineAttributes e);
+            static void SetFrameRateCap(int fps);
 
             /* @name: GetAttributes
              * @descr: Retrieves the engine settings.

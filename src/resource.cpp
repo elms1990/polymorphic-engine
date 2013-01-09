@@ -92,7 +92,7 @@ int Font::GetFontSize() {
 
 /* SoundEffect implementation */
 SoundEffect::SoundEffect(Mix_Chunk* snd, const char* name) : Resource((void*)snd, name) {
-    SetVolume(100);
+    SetVolume(0.5f);
     playing = false;
     halted = false;
     paused = false;
@@ -106,8 +106,8 @@ SoundEffect::~SoundEffect() {
     }
 }
 
-void SoundEffect::SetVolume(int volume) {
-    Mix_VolumeChunk((Mix_Chunk*)res, volume);
+void SoundEffect::SetVolume(float volume) {
+    Mix_VolumeChunk((Mix_Chunk*)res, 128*volume);
 }
 
 int SoundEffect::GetVolume() {
@@ -158,7 +158,7 @@ void SoundEffect::Stop() {
 
 /* Music implementation */
 Music::Music(Mix_Music* music, const char* name) : Resource((void*)music, name) {
-    SetVolume(100);
+    SetVolume(0.5f);
     playing = false;
     halted = false;
     paused = false;
@@ -171,8 +171,8 @@ Music::~Music() {
     }
 }
 
-void Music::SetVolume(int volume) {
-    Mix_VolumeMusic(volume);
+void Music::SetVolume(float volume) {
+    Mix_VolumeMusic(128*volume);
 }
 
 int Music::GetVolume() {

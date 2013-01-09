@@ -6,10 +6,10 @@
 #include "text_buffer.h"
 
 using Polymorphic::Font;
-using Polymorphic::GameInterface;
+using Polymorphic::GameIF;
 using Polymorphic::TextBuffer;
 
-class HW : public GameInterface {
+class HW : public GameIF {
     public:
         HW();
         ~HW();

@@ -2,7 +2,7 @@
 
 # BASE DEFS #
 LDFLAGS= -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf `sdl-config --cflags --libs` -lGL
-CXXFLAGS= -pedantic -Wall -ggdb
+CXXFLAGS= -pedantic -Wall -O2
 LIBNAME=polymorphic-engine.a
 
 # SOURCE FILES #

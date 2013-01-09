@@ -1,11 +1,6 @@
 #include "engine.h"
-#include <iostream>
-#include <sstream>
 #include <SDL_opengl.h>
-using namespace std;
 using namespace Polymorphic;
-
-#define FRAME_RATE (60)
 
 bool Engine::SDL_INIT = false;
 bool Engine::SDL_IMG = false;
@@ -15,7 +10,7 @@ bool Engine::LOG = false;
 bool Engine::initialized = false;
 SDL_Surface* Engine::opt_icon = NULL;
 GameIF* Engine::game = NULL;
-EngineAttributes Engine::eat = { 800, 600, false };
+EngineAttributes Engine::eat = { 800, 600, false, 60 };
 
 /* Modules */
 Graphics Engine::graphics;
@@ -85,12 +80,17 @@ int Engine::Initialize() {
     }
 
     /* Initializes SDL libs and dependencies */
-    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO)  < 0) {
+    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
         log.LogMessage("Error", "SDL error. Could not initialize lib.");
         Shutdown();
         return -1;
     }
     SDL_INIT = true;
+
+//    const SDL_VideoInfo *vinfo = SDL_GetVideoInfo();
+//    printf("HW_AV: %d WM_AV: %d BLIT_HW: %d BLIT_CC_HW: %d BLIT_SW: %d MEM: %d DESK_W: %d DESK_H: %d\n",
+//            vinfo->hw_available, vinfo->wm_available, vinfo->blit_hw, vinfo->blit_hw_CC, vinfo->blit_sw,
+//            vinfo->video_mem, vinfo->current_w, vinfo->current_h);
 
     if (TTF_Init() == -1) {
         log.LogMessage("Error", "Font system could not be initialized.");
@@ -183,8 +183,8 @@ void Engine::Run(GameIF *gi) {
         graphics.Flush();
         
         /* Cap the fps */
-        if (t.GetTicks() < (1000.f/FRAME_RATE)) {
-            SDL_Delay((1000.f/FRAME_RATE) - t.GetTicks());
+        if (t.GetTicks() < (1000.f/eat.fps)) {
+            SDL_Delay((1000.f/eat.fps) - t.GetTicks());
         }
 
         deltaT = t.GetTicks();
@@ -204,21 +204,18 @@ EngineAttributes Engine::GetAttributes() {
     return eat;
 }
 
-void Engine::SetAttribute(EngineParam param, int value) {
-    switch (param) {
-        case (WINDOW_WIDTH):
-            eat.width = value;
-            break;
+void Engine::SetViewport(int width, int height) {
+    if (width > 0 && height > 0) {
+        eat.width = width;
+        eat.height = height;
+    }
+}
 
-        case (WINDOW_HEIGHT):
-            eat.height = value;
-            break;
+void Engine::StartOnFullScreen(bool b) {
+    eat.fullscreen = b;
+}
 
-        case (WINDOW_FSCREEN):
-            eat.fullscreen = (bool)value;
-            break;
-
-        default:
-            break;
-    };
+void Engine::SetFrameRateCap(int fps) {
+    if (fps > 0)
+        eat.fps = fps;
 }

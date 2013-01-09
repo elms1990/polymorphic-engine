@@ -24,12 +24,6 @@ namespace Polymorphic {
     #define MAX_LAYERS (6)
     #define HIDDEN_LAYER (-1)
 
-    typedef struct _dunit {
-        Texture *t;
-        Rectanglef src;
-        Rectanglef dst;
-    } DrawableUnit;
-
     class Graphics {
         public:
             Graphics();
@@ -163,7 +157,7 @@ namespace Polymorphic {
             int Initialize();
 
             /* @name: DrawBatch
-             * @descr: Draws every issued object on the
+             * @descr: Draws every enqueued object to the
              * screen.
              * @params: None.
              * @return: Nothing.
@@ -176,6 +170,12 @@ namespace Polymorphic {
             int GetHeight() { return height; }
 
         private:
+            typedef struct _dunit {
+                GLuint id;
+                Rectanglef src;
+                Rectanglef dst;
+            } DrawableUnit;
+
             Color c;
             SDL_Surface* scr;
             int width;

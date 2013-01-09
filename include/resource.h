@@ -65,8 +65,8 @@ namespace Polymorphic {
 
             bool Loop;
 
-            //Volume range [0,128]
-            void SetVolume(int volume);
+            // 0: Muted 1: Max Volume
+            void SetVolume(float volume);
 
             int GetVolume();
 
@@ -86,8 +86,8 @@ namespace Polymorphic {
 
             bool Loop;
 
-            //Volume range [0,128]
-            void SetVolume(int volume);
+            // 0: Muted 1: Max Volume
+            void SetVolume(float volume);
 
             int GetVolume();
 

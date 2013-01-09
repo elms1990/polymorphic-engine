@@ -24,6 +24,8 @@ TextBuffer::TextBuffer(Font *f, char *text) {
 }
 
 TextBuffer::~TextBuffer() {
+    if (t != NULL)
+        delete t;
 }
 
 void TextBuffer::SetDisplayText(char *text) {
@@ -57,8 +59,10 @@ Texture* TextBuffer::GetBuffer() {
 }
 
 void TextBuffer::UpdateBuffer() {
-    SDL_Color scl = { scl.r = c.Red, scl.g = c.Green, scl.b = c.Blue, scl.unused = c.Alpha };
-    SDL_Surface* txt = TTF_RenderUTF8_Blended((TTF_Font*)f->GetResource(), text, scl);
+    SDL_Color scl = { scl.r = c.Red, scl.g = c.Green, scl.b = c.Blue, 
+        scl.unused = c.Alpha };
+    SDL_Surface *txt = TTF_RenderUTF8_Blended((TTF_Font*)f->GetResource(), 
+            text, scl);
 
     if (txt != NULL) {
         if (t != NULL)

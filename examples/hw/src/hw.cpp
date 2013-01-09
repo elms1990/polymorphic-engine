@@ -19,7 +19,6 @@ int HW::Initialize() {
 }
 
 void HW::Update(int deltaTime) {
-    
 }
 
 void HW::Render(int deltaTime) {
