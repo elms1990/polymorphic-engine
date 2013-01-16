@@ -17,7 +17,7 @@ class HW : public GameIF {
         //Game Interface
         int Initialize();
         void Update(int deltaTime);
-        void Render(int deltaTime);
+        void Render();
         void Shutdown();
     private:
         TextBuffer *hello;

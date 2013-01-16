@@ -62,9 +62,8 @@ void Engine::Update(int deltaTime) {
     game->Update(deltaTime);
 }
 
-void Engine::Render(int deltaTime) {
-    game->Render(deltaTime);
-    graphics.DrawBatch();
+void Engine::Render() {
+    game->Render();
 }
 
 int Engine::Initialize() {
@@ -177,7 +176,7 @@ void Engine::Run(GameIF *gi) {
         Update(deltaT);
 
         /* DRAW STUFF HERE */
-        Render(deltaT);
+        Render();
 
         /* Swap buffers and update screen */
         graphics.Flush();

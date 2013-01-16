@@ -14,12 +14,10 @@ namespace Polymorphic {
         public:
             Rectanglef();
             Rectanglef(float x, float y, int w, int h);
-            Rectanglef(float x, float y, float z, int w, int h);
             ~Rectanglef();
 
             float X;
             float Y;
-            float Z;
             int Width;
             int Height;
 

@@ -35,7 +35,7 @@ namespace Polymorphic {
              *      @deltaTime: Time elapsed since last update.
              * @return: Nothing.
              */
-            virtual void Render(int deltaTime) = 0;
+            virtual void Render() = 0;
 
             /* @name: Shutdown
              * @descr: Shuts down this game instance,

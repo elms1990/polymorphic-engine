@@ -3,7 +3,6 @@
 # BASE DEFS #
 LDFLAGS= -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf `sdl-config --cflags --libs` -lGL
 CXXFLAGS= -pedantic -Wall -ggdb
-LIBNAME = polymorphic-engine.a
 
 # SOURCE FILES #
 SRC= $(wildcard src/*.cpp)
@@ -25,7 +24,7 @@ W32LDFLAGS= -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -Wl,-sub
 linux:
 	@echo
 	@echo \#\#\# COMPILING HELLO WORLD FOR LINUX \#\#\#
-	$(LCXX) $(SRC) ../../$(LIBNAME) -o hw.o $(CXXFLAGS) $(INCLUDE) $(LDFLAGS)
+	$(LCXX) $(SRC) -o hw.o $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -lpolymorphic
 
 w32: 
 	@echo

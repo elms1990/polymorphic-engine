@@ -15,14 +15,8 @@
 #include "rectanglef.h"
 #include "color.h"
 #include "text_buffer.h"
-#include <list>
-
-using std::list;
 
 namespace Polymorphic {
-
-    #define MAX_LAYERS (6)
-    #define HIDDEN_LAYER (-1)
 
     class Graphics {
         public:
@@ -35,10 +29,6 @@ namespace Polymorphic {
              *      @src: Source texture.
              *      @src_boundary: Texture' region to be drawn.
              *      @dest_boundary: Region in the screen to draw.
-             *      PS: The dest_boundary Z value acts like the layer value and
-             * follow the layer indexing rule: The values may range from 0 to 5.
-             * The -1 value is also acceptable, except it won't draw anything
-             * on the screen.
              * @return: Nothing.
              */
             void Draw(Texture* src, Rectanglef src_boundary, Rectanglef dest_boundary);
@@ -60,20 +50,6 @@ namespace Polymorphic {
              *      @src: Source texture.
              *      @dest_x: X coord in the screen.
              *      @dest_y: Y coord in the screen.
-             *      @layer: layer that the object will be drawn. The layer
-             * values ranges are [0,5]. The -1 value is also valid, but
-             * won't draw the object on the screen.
-             * @return: Nothing.
-             */
-            void Draw(Texture* src, float dest_x, float dest_y, int layer);
-
-            /* @name: Draw
-             * @descr: Adds the texture to the drawing batch. Uses the default
-             * layer when drawing(layer = 0).
-             * @params:
-             *      @src: Source texture.
-             *      @dest_x: X coord in the screen.
-             *      @dest_y: Y coord in the screen.
              * @return: Nothing.
              */
             void Draw(Texture* src, float dest_x, float dest_y);
@@ -90,19 +66,6 @@ namespace Polymorphic {
              * @return: Nothing.
              */
             void DrawText(TextBuffer* t, float x, float y);
-
-            /* @name: DrawText
-             * @descr: Adds the text to the drawing batch.
-             * @params:
-             *      @font: Font that will be used to draw.
-             *      @text: Message that will be displayed.
-             *      @dest_x: X coord in the screen.
-             *      @dest_y: Y coord in the screen.
-             *      @layer: layer where the text will be displayed.
-             *      @color: Message color.
-             * @return: Nothing.
-             */
-            void DrawText(TextBuffer* t, float x, float y, int layer);
 
             /* @name: SetWindowTitle
              * @descr: Changes the Window title.
@@ -156,32 +119,15 @@ namespace Polymorphic {
              */           
             int Initialize();
 
-            /* @name: DrawBatch
-             * @descr: Draws every enqueued object to the
-             * screen.
-             * @params: None.
-             * @return: Nothing.
-             * PS: Should only be called by the engine internals.
-             */
-            void DrawBatch();
-
             //Getters
             int GetWidth() { return width; }
             int GetHeight() { return height; }
 
         private:
-            typedef struct _dunit {
-                GLuint id;
-                Rectanglef src;
-                Rectanglef dst;
-            } DrawableUnit;
-
             Color c;
             SDL_Surface* scr;
             int width;
             int height;
-
-            list<DrawableUnit> batch[MAX_LAYERS];
 
             //scale factors base on default screen dimensions
             float sw;

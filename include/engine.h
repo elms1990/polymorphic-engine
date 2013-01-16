@@ -16,7 +16,6 @@
 #include "keyboard.h"
 #include "keys.h"
 #include "log.h"
-#include "math_helper.h"
 #include "mouse.h"
 #include "rectanglef.h"
 #include "resource.h"
@@ -102,7 +101,7 @@ namespace Polymorphic {
         private:
             static int Initialize();
             static void Update(int deltaTime);
-            static void Render(int deltaTime);
+            static void Render();
             static void Shutdown();
 
             static EngineAttributes eat;

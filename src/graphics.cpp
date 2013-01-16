@@ -47,66 +47,41 @@ bool Graphics::ResizeWindow(int new_w, int new_h, bool full_screen) {
     return true;
 }
 
-void Graphics::DrawBatch() {
-    int i;
-   
-    glScalef(sw, sh, 1.f);
-    for (i = 1; i < MAX_LAYERS; i++) {
-        for (list<DrawableUnit>::iterator it = batch[i].begin(); it != batch[i].end();
-                it++) {
-            glBindTexture(GL_TEXTURE_2D, it->id);
-
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-            glBegin(GL_QUADS);
-
-            //bottom-left
-            glTexCoord2f(it->src.X/it->src.Width, it->src.Y/it->src.Height);
-            glVertex2f(it->dst.X, it->dst.Y);
-
-            //bottom-right
-            glTexCoord2f((it->src.X + it->src.Width)/it->src.Width,
-                    it->src.Y/it->src.Height);
-            glVertex2f(it->dst.X + it->dst.Width, it->dst.Y);
-
-            //top-right
-            glTexCoord2f((it->src.X + it->src.Width)/it->src.Width, 
-                    (it->src.Y + it->src.Height)/it->src.Height);
-            glVertex2f(it->dst.X + it->dst.Width, it->dst.Y + it->dst.Height);
-
-            //top-left
-            glTexCoord2f(it->src.X/it->src.Width, 
-                    (it->src.Y + it->src.Height)/it->src.Height);
-            glVertex2f(it->dst.X, it->dst.Y + it->dst.Height);
-            glEnd();
-        }
-        batch[i].clear();
-    }
-    batch[0].clear();
-    glLoadIdentity();
-}
-
 void Graphics::Draw(Texture* src, Rectanglef src_rect, Rectanglef dst_rect) {
-    if (src != NULL) {
-        DrawableUnit du = { du.id = src->GetID(), du.src = src_rect, du.dst = dst_rect };
-        batch[(int)(dst_rect.Z)+1].push_back(du);
-    }
+    glScalef(sw, sh, 1.f);
+    glBindTexture(GL_TEXTURE_2D, src->GetID());
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    glBegin(GL_QUADS);
+
+    //bottom-left
+    glTexCoord2f(src_rect.X/src->Width, src_rect.Y/src->Height);
+    glVertex2f(dst_rect.X, dst_rect.Y);
+
+    //bottom-right
+    glTexCoord2f((src_rect.X + src_rect.Width)/src->Width,
+            src_rect.Y/src->Height);
+    glVertex2f(dst_rect.X + dst_rect.Width, dst_rect.Y);
+
+    //top-right
+    glTexCoord2f((src_rect.X + src_rect.Width)/src->Width, 
+            (src_rect.Y + src_rect.Height)/src->Height);
+    glVertex2f(dst_rect.X + dst_rect.Width, dst_rect.Y + dst_rect.Height);
+
+    //top-left
+    glTexCoord2f(src_rect.X/src->Width, 
+            (src_rect.Y + src_rect.Height)/src->Height);
+    glVertex2f(dst_rect.X, dst_rect.Y + dst_rect.Height);
+    glEnd();
 }
 
 void Graphics::Draw(Texture* src, Rectanglef src_rect, float dest_x, float dest_y) {
-    if (src != NULL)
-        Draw(src, src_rect, Rectanglef(dest_x, dest_y, src_rect.Z, 0, 0));
+    Draw(src, src_rect, Rectanglef(dest_x, dest_y, 0, 0));
 }
 
 void Graphics::Draw(Texture* src, float dest_x, float dest_y) {
-    if (src != NULL)
-        Draw(src, Rectanglef(0.f, 0.f, src->Width, src->Height), Rectanglef(dest_x, dest_y, src->Width, src->Height));
-}
-
-void Graphics::Draw(Texture* src, float dest_x, float dest_y, int layer) {
-    if (src != NULL) {
-        Draw(src, Rectanglef(0.f, 0.f, 0.f, src->Width, src->Height), 
-                Rectanglef(dest_x, dest_y, (float)layer, src->Width, src->Height));
-    }
+    Draw(src, Rectanglef(0.f, 0.f, src->Width, src->Height), 
+            Rectanglef(dest_x, dest_y, src->Width, src->Height));
 }
 
 void Graphics::Flush() {
@@ -116,13 +91,6 @@ void Graphics::Flush() {
 void Graphics::DrawText(TextBuffer* t, float x, float y) {
     Draw(t->GetBuffer(), Rectanglef(0, 0, t->GetBuffer()->Width, 
                 t->GetBuffer()->Height), Rectanglef(x, y, 
-                t->GetBuffer()->Width*t->GetScaleFactor(), 
-                t->GetBuffer()->Height*t->GetScaleFactor()));
-}
-
-void Graphics::DrawText(TextBuffer* t, float x, float y, int layer) {
-    Draw(t->GetBuffer(), Rectanglef(0, 0, t->GetBuffer()->Width, 
-                t->GetBuffer()->Height), Rectanglef(x, y, (float)layer,
                 t->GetBuffer()->Width*t->GetScaleFactor(), 
                 t->GetBuffer()->Height*t->GetScaleFactor()));
 }

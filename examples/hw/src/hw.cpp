@@ -21,7 +21,7 @@ int HW::Initialize() {
 void HW::Update(int deltaTime) {
 }
 
-void HW::Render(int deltaTime) {
+void HW::Render() {
     Engine::graphics.DrawText(hello, 30, 30);
 }
 
