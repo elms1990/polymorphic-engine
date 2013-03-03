@@ -54,6 +54,8 @@ void Texture::SurfaceToTexture() {
                 texture_format = GL_RGB;
             else
                 texture_format = GL_BGR;
+        } else {
+            return;
         }
     }
 
