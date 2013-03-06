@@ -8,6 +8,8 @@
 using Polymorphic::Font;
 using Polymorphic::GameIF;
 using Polymorphic::TextBuffer;
+using Polymorphic::Texture;
+using Polymorphic::Image;
 
 class HW : public GameIF {
     public:
@@ -22,6 +24,7 @@ class HW : public GameIF {
     private:
         TextBuffer *hello;
         Font *def;
+        Texture *tex;
 };
 
 #endif

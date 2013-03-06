@@ -1,0 +1,8 @@
+action=122
+down=274
+left=276
+next=283
+prev=282
+reset=27
+right=275
+up=273

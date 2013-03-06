@@ -7,7 +7,7 @@
 #include "mouse.h"
 #include <iostream>
 #include <fstream>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 using namespace std;
 using namespace Polymorphic;

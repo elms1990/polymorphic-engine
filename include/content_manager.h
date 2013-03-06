@@ -8,11 +8,10 @@
 #ifndef __CONTENT_MANAGER_H__
 #define __CONTENT_MANAGER_H__
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <SDL_opengl.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <map>
 #include <string>
 #include "hack.h"
@@ -29,7 +28,6 @@ namespace Polymorphic {
         private:
             map<string, Resource*, _strhack> resources;
             int channel;
-            GLuint SurfaceToTexture(SDL_Surface* s);
 
         public:
             bool DeallocateOnShutdown;
@@ -37,14 +35,15 @@ namespace Polymorphic {
             void Initialize();
             void Shutdown();
 
-            Texture* LoadImage(const char* name, const char* path);
-            Font* LoadFont(const char* name, const char* path, int font_size);
-            Font* LoadFont(const char* name, const char* path);
-            SoundEffect* LoadSoundEffect(const char* name, const char* path);
-            Music* LoadMusic(const char* name, const char* path);
+            Image* LoadImage(string name, string path);
+            Font* LoadFont(string name, string path, int font_size);
+            Font* LoadFont(string name, string path);
+            SoundEffect* LoadSoundEffect(string name, string path);
+            Music* LoadMusic(string name, string path);
 
-            void UnloadResource(const char* name);
-            Resource* GetResource(const char* name);
+            void UnloadResource(string name);
+            void AddResource(Resource *r, string name);
+            Resource* GetResource(string name);
     };
 
 }

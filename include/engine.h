@@ -23,11 +23,10 @@
 #include "timer.h"
 
 /* SDL includes */
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <SDL_opengl.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
 namespace Polymorphic {
 
@@ -111,7 +110,6 @@ namespace Polymorphic {
             static bool SDL_MIXER;
             static bool LOG;
             static bool initialized;
-            static SDL_Surface *opt_icon;
 
             static GameIF *game;
     };

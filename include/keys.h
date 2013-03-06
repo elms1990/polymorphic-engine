@@ -8,7 +8,7 @@
 #ifndef __KEYS_H__
 #define __KEYS_H__
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 namespace Polymorphic {
 
     typedef enum {
@@ -86,16 +86,16 @@ namespace Polymorphic {
         //end of ascii mapped keys
 
         //Num pad keys
-        KEY_NUM0 = SDLK_KP0,
-        KEY_NUM1 = SDLK_KP1,
-        KEY_NUM2 = SDLK_KP2,
-        KEY_NUM3 = SDLK_KP3,
-        KEY_NUM4 = SDLK_KP4,
-        KEY_NUM5 = SDLK_KP5,
-        KEY_NUM6 = SDLK_KP6,
-        KEY_NUM7 = SDLK_KP7,
-        KEY_NUM8 = SDLK_KP8,
-        KEY_NUM9 = SDLK_KP9,
+        KEY_NUM0 = SDLK_KP_0,
+        KEY_NUM1 = SDLK_KP_1,
+        KEY_NUM2 = SDLK_KP_2,
+        KEY_NUM3 = SDLK_KP_3,
+        KEY_NUM4 = SDLK_KP_4,
+        KEY_NUM5 = SDLK_KP_5,
+        KEY_NUM6 = SDLK_KP_6,
+        KEY_NUM7 = SDLK_KP_7,
+        KEY_NUM8 = SDLK_KP_8,
+        KEY_NUM9 = SDLK_KP_9,
         KEY_NUM_PERIOD = SDLK_KP_PERIOD,
         KEY_NUM_DIVIDE = SDLK_KP_DIVIDE,
         KEY_NUM_MULTIPLY = SDLK_KP_MULTIPLY,
@@ -128,9 +128,9 @@ namespace Polymorphic {
         KEY_F12 = SDLK_F12,
 
         //Key state modifiers
-        KEY_NUMLOCK = SDLK_NUMLOCK,
+        KEY_NUMLOCK = SDLK_NUMLOCKCLEAR,
         KEY_CAPSLOCK = SDLK_CAPSLOCK,
-        KEY_SCROLL_LOCK = SDLK_SCROLLOCK,
+        KEY_SCROLL_LOCK = SDLK_SCROLLLOCK,
         KEY_RSHIFT = SDLK_RSHIFT,
         KEY_LSHIFT = SDLK_LSHIFT,
         KEY_RCTRL = SDLK_RCTRL,

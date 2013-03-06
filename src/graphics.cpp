@@ -6,17 +6,20 @@
 
 #include "graphics.h"
 #include "engine.h"
-#include <SDL.h>
-#include <SDL_opengl.h>
-#include <algorithm>
+#include <SDL2/SDL.h>
+#include <string>
 
-using std::sort;
+using std::string;
 using namespace Polymorphic;
 
-#define DEFAULT_WINDOW_FLAGS (SDL_HWSURFACE | SDL_OPENGL)
+#define DEFAULT_WINDOW_FLAGS (SDL_WINDOW_SHOWN)
+#define DEFAULT_RENDERER_FLAGS (SDL_RENDERER_ACCELERATED)
 
 Graphics::Graphics() {
-    scr = NULL;
+    window = NULL;
+    renderer = NULL;
+    sw = 0.f;
+    sh = 0.f;
     width = 0;
     height = 0;
 }
@@ -27,7 +30,6 @@ Graphics::~Graphics() {
 
 int Graphics::Initialize() {
     EngineAttributes eat = Engine::GetAttributes();
-    SDL_putenv((char*)"SDL_VIDEO_CENTERED=1");
     if (CreateContext(eat.width, eat.height, eat.fullscreen) == -1)
         return -1;
 
@@ -36,8 +38,8 @@ int Graphics::Initialize() {
     return 0;
 }
 
-void Graphics::SetWindowTitle(const char* title) {
-    SDL_WM_SetCaption(title, title);
+void Graphics::SetWindowTitle(string title) {
+    SDL_SetWindowTitle(window, title.c_str());
 }
 
 bool Graphics::ResizeWindow(int new_w, int new_h, bool full_screen) {
@@ -47,95 +49,70 @@ bool Graphics::ResizeWindow(int new_w, int new_h, bool full_screen) {
     return true;
 }
 
-void Graphics::Draw(Texture* src, Rectanglef src_rect, Rectanglef dst_rect) {
-    glScalef(sw, sh, 1.f);
-    glBindTexture(GL_TEXTURE_2D, src->GetID());
+void Graphics::Draw(Texture *src, Rectanglef src_rect, Rectanglef dst_rect) {
+    SDL_Rect sr = { sr.x = src_rect.X, sr.y = src_rect.Y,sr.w = src_rect.Width,
+        sr.h = src_rect.Height };
+    SDL_Rect dr = { dr.x = dst_rect.X, dr.y = dst_rect.Y,dr.w = dst_rect.Width,
+        dr.h = dst_rect.Height };
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    glBegin(GL_QUADS);
-
-    //bottom-left
-    glTexCoord2f(src_rect.X/src->Width, src_rect.Y/src->Height);
-    glVertex2f(dst_rect.X, dst_rect.Y);
-
-    //bottom-right
-    glTexCoord2f((src_rect.X + src_rect.Width)/src->Width,
-            src_rect.Y/src->Height);
-    glVertex2f(dst_rect.X + dst_rect.Width, dst_rect.Y);
-
-    //top-right
-    glTexCoord2f((src_rect.X + src_rect.Width)/src->Width, 
-            (src_rect.Y + src_rect.Height)/src->Height);
-    glVertex2f(dst_rect.X + dst_rect.Width, dst_rect.Y + dst_rect.Height);
-
-    //top-left
-    glTexCoord2f(src_rect.X/src->Width, 
-            (src_rect.Y + src_rect.Height)/src->Height);
-    glVertex2f(dst_rect.X, dst_rect.Y + dst_rect.Height);
-    glEnd();
+    SDL_RenderCopy(renderer, (SDL_Texture*)src->GetResource(), &sr, &dr);
 }
 
-void Graphics::Draw(Texture* src, Rectanglef src_rect, float dest_x, float dest_y) {
-    Draw(src, src_rect, Rectanglef(dest_x, dest_y, 0, 0));
+void Graphics::Draw(Texture *src, Rectanglef src_rect, float dest_x, float dest_y) {
+    Draw(src, src_rect, Rectanglef(dest_x, dest_y, src->GetWidth(), src->GetHeight()));
 }
 
-void Graphics::Draw(Texture* src, float dest_x, float dest_y) {
-    Draw(src, Rectanglef(0.f, 0.f, src->Width, src->Height), 
-            Rectanglef(dest_x, dest_y, src->Width, src->Height));
+void Graphics::Draw(Texture *src, float dest_x, float dest_y) {
+    Draw(src, Rectanglef(0.f, 0.f, src->GetWidth(), src->GetHeight()), 
+            Rectanglef(dest_x, dest_y, src->GetWidth(), src->GetHeight()));
 }
 
 void Graphics::Flush() {
-    SDL_GL_SwapBuffers();
+    SDL_RenderPresent(renderer);
 }
 
 void Graphics::DrawText(TextBuffer* t, float x, float y) {
-    Draw(t->GetBuffer(), Rectanglef(0, 0, t->GetBuffer()->Width, 
-                t->GetBuffer()->Height), Rectanglef(x, y, 
-                t->GetBuffer()->Width*t->GetScaleFactor(), 
-                t->GetBuffer()->Height*t->GetScaleFactor()));
+    Draw(t->GetBuffer(), Rectanglef(0, 0, t->GetBuffer()->GetWidth(), 
+                t->GetBuffer()->GetHeight()), Rectanglef(x, y, 
+                t->GetBuffer()->GetWidth()*t->GetScaleFactor(), 
+                t->GetBuffer()->GetHeight()*t->GetScaleFactor()));
 }
 
 void Graphics::Clear() {
-    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_RenderClear(renderer);
 }
 
-void Graphics::SetClearColor(Color c) {
-    glClearColor(c.Red, c.Green, c.Blue, c.Alpha);
+void Graphics::SetRenderColor(Color c) {
+    SDL_SetRenderDrawColor(renderer, c.Red, c.Blue, c.Green, c.Alpha);
+}
+
+void Graphics::Shutdown() {
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+}
+
+int Graphics::GetWidth() {
+    return width;
+}
+
+int Graphics::GetHeight() {
+    return height;
 }
 
 int Graphics::CreateContext(int w, int h, bool fscreen) {
-    SDL_Surface* screen = NULL;
-    c = Color(0.f, 0.f, 0.f, 1.f);
+    window = SDL_CreateWindow("",
+            SDL_WINDOWPOS_UNDEFINED,
+            SDL_WINDOWPOS_UNDEFINED,
+            w, 
+            h, 
+            DEFAULT_WINDOW_FLAGS);
+    renderer = SDL_CreateRenderer(window, -1, DEFAULT_RENDERER_FLAGS);
 
-    /* Initializes OpenGL Context */
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-    screen = SDL_SetVideoMode(w, h, 32, DEFAULT_WINDOW_FLAGS);
-    if (screen == NULL) {
-        Engine::log.LogMessage("Error", "Could not initialize SDL... Quitting!");
+    if ((window == NULL) | (renderer == NULL)) {
+        Engine::log.LogMessage("Error", "Failed to set up a Window...");
         return -1;
     }
+    SDL_GetWindowSize(window, &width, &height);
 
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glClearColor(c.Red, c.Green, c.Blue, c.Alpha);
-    glViewport(0, 0, w, h);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.f, w, h, 0.f, -1.f, 1.f);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    const SDL_VideoInfo *vi = SDL_GetVideoInfo(); 
-    width = vi->current_w;
-    height = vi->current_h;
-
-    scr = screen;
-
-    EngineAttributes eat = Engine::GetAttributes();
-
-    sw = (float)(width)/eat.width;
-    sh = (float)(height)/eat.height;
     return 0;
 }

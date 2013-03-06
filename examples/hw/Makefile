@@ -1,7 +1,7 @@
 ######################### MAKEFILE ############################
 
 # BASE DEFS #
-LDFLAGS= -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf `sdl-config --cflags --libs` -lGL
+LDFLAGS= -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 CXXFLAGS= -pedantic -Wall -ggdb
 
 # SOURCE FILES #

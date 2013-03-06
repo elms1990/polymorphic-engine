@@ -8,7 +8,7 @@
 #ifndef __INPUT_STATE_H__
 #define __INPUT_STATE_H__
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <list>
 #include <string>
 using std::list;

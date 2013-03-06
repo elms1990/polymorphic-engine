@@ -1,9 +1,8 @@
 ######################### MAKEFILE ############################
 
 # BASE DEFS #
-LDFLAGS= -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf `sdl-config --cflags --libs` -lGL
-CXXFLAGS= -pedantic -Wall -O2
-LIBNAME=polymorphic-engine.a
+LDFLAGS= -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+CXXFLAGS= -pedantic -Wall -ggdb
 
 # SOURCE FILES #
 SRC= $(wildcard src/*.cpp)

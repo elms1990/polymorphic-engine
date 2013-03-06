@@ -8,48 +8,61 @@
 #ifndef __RESOURCE_H__
 #define __RESOURCE_H__
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <SDL_opengl.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+#include <string>
+
+using std::string;
 
 namespace Polymorphic {
 
     class Resource {
         public:
-            Resource(void* res, const char* name);
+            Resource();
+            Resource(void *res, string name);
             virtual ~Resource() = 0;
 
-            void* GetResource() { return res; }
-            const char* GetName() { return name; }
+            void* GetResource();
+            void SetResource(void *res);
+            string GetName();
+            void SetName(string name);
 
         protected:
-            void* res;
-            const char* name;
+            void *res;
+            string name;
+    };
+    
+    class Image : public Resource {
+        public:
+            Image();
+            ~Image();
 
+            static Image* LoadImage(string path);
+
+            int GetWidth();
+            int GetHeight();
+
+        private:
+            Image* InternalLoadImage(string path);
     };
 
     class Texture : public Resource {
         public:
-            Texture(SDL_Surface* sfc, const char* name);
+            Texture();
             ~Texture();
 
-            int Width;
-            int Height;
+            static Texture* CreateTextureFromImage(Image *img);
 
-            GLuint GetID();
-
-        private:
-            GLuint tid;
-
-            void SurfaceToTexture();
+            int GetWidth();
+            int GetHeight();
     };
 
     class Font : public Resource {
         public:
-            Font(TTF_Font* ft, const char* name, int size);
-            Font(TTF_Font* ft, const char* name);
+            Font(TTF_Font *ft, string name, int size);
+            Font(TTF_Font *ft, string name);
             ~Font();
 
             int GetFontSize();
@@ -60,7 +73,7 @@ namespace Polymorphic {
 
     class Music : public Resource {
         public:
-            Music(Mix_Music* music, const char* name);
+            Music(Mix_Music *music, string name);
             ~Music();
 
             bool Loop;
@@ -81,7 +94,7 @@ namespace Polymorphic {
 
     class SoundEffect : public Resource {
         public:
-            SoundEffect(Mix_Chunk* snd, const char* name);
+            SoundEffect(Mix_Chunk *snd, string name);
             ~SoundEffect();
 
             bool Loop;

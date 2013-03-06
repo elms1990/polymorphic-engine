@@ -5,7 +5,7 @@
  */
 
 #include "timer.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 using namespace Polymorphic;
 

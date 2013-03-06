@@ -32,7 +32,7 @@ void Keyboard::Update() {
 
     oldIS = newIS;
 
-    Uint8 *keys = SDL_GetKeyState(NULL);
+    Uint8 *keys = SDL_GetKeyboardState(NULL);
     list<string> _pressed, _justPressed, _released, _justReleased;
 
     /* Compares the new state with the old one */

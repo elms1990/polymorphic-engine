@@ -6,14 +6,13 @@ using Polymorphic::TextBuffer;
 
 TextBuffer::TextBuffer() {
     dirty = false;
-    text = NULL;
     f = NULL;
     size = 0;
     t = NULL;
     c = Color(0xff, 0xff, 0xff, 0xff);
 }
 
-TextBuffer::TextBuffer(Font *f, char *text) {
+TextBuffer::TextBuffer(Font *f, string text) {
     this->f = f;
     this->text = text;
     dirty = true;
@@ -28,7 +27,7 @@ TextBuffer::~TextBuffer() {
         delete t;
 }
 
-void TextBuffer::SetDisplayText(char *text) {
+void TextBuffer::SetDisplayText(string text) {
     this->text = text;
     dirty = true;
 }
@@ -62,12 +61,13 @@ void TextBuffer::UpdateBuffer() {
     SDL_Color scl = { scl.r = c.Red, scl.g = c.Green, scl.b = c.Blue, 
         scl.unused = c.Alpha };
     SDL_Surface *txt = TTF_RenderUTF8_Blended((TTF_Font*)f->GetResource(), 
-            text, scl);
+            text.c_str(), scl);
 
     if (txt != NULL) {
         if (t != NULL)
             delete t;
-        t = new Texture(txt, "");
+        t = new Texture();
+        t->SetResource((void*)txt);
         dirty = false;
     }
     
@@ -81,10 +81,10 @@ int TextBuffer::GetFontSize() {
     return size; 
 }
 
-char* TextBuffer::GetText() {
+string TextBuffer::GetText() {
     return text;
 }
 
-const char* TextBuffer::GetFontName() {
+string TextBuffer::GetFontName() {
     return f->GetName();
 }

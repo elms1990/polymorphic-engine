@@ -1,5 +1,4 @@
 #include "engine.h"
-#include <SDL_opengl.h>
 using namespace Polymorphic;
 
 bool Engine::SDL_INIT = false;
@@ -8,7 +7,6 @@ bool Engine::SDL_TTF = false;
 bool Engine::SDL_MIXER = false;
 bool Engine::LOG = false;
 bool Engine::initialized = false;
-SDL_Surface* Engine::opt_icon = NULL;
 GameIF* Engine::game = NULL;
 EngineAttributes Engine::eat = { 800, 600, false, 60 };
 
@@ -23,9 +21,7 @@ void Engine::Shutdown() {
     cmanager.Shutdown();
     keyboard.Shutdown();
     mouse.Shutdown();
-
-    if (opt_icon != NULL)
-        SDL_FreeSurface(opt_icon);
+    graphics.Shutdown();
 
     if (SDL_MIXER) {
         log.LogMessage("Warn", "Shutting down SDL_Mixer");
@@ -78,18 +74,14 @@ int Engine::Initialize() {
         LOG = true;
     }
 
-    /* Initializes SDL libs and dependencies */
-    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
-        log.LogMessage("Error", "SDL error. Could not initialize lib.");
+    /* Initializes SDL2 libs and dependencies */
+    if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
+        log.LogMessage("Error", "SDL2 error. Could not initialize lib.");
         Shutdown();
         return -1;
     }
-    SDL_INIT = true;
 
-//    const SDL_VideoInfo *vinfo = SDL_GetVideoInfo();
-//    printf("HW_AV: %d WM_AV: %d BLIT_HW: %d BLIT_CC_HW: %d BLIT_SW: %d MEM: %d DESK_W: %d DESK_H: %d\n",
-//            vinfo->hw_available, vinfo->wm_available, vinfo->blit_hw, vinfo->blit_hw_CC, vinfo->blit_sw,
-//            vinfo->video_mem, vinfo->current_w, vinfo->current_h);
+    SDL_INIT = true;
 
     if (TTF_Init() == -1) {
         log.LogMessage("Error", "Font system could not be initialized.");
@@ -105,21 +97,13 @@ int Engine::Initialize() {
     }
     SDL_IMG = true;
 
-    if (Mix_Init(MIX_INIT_MP3) == -1 || Mix_OpenAudio(22050, AUDIO_S16, 2, 4096) == -1) {
-        log.LogMessage("Error", "Sound system could not be initialized.");
-        Shutdown();
-        return -1;
-    }
+//    if (Mix_Init(MIX_INIT_MP3) == -1 || Mix_OpenAudio(22050, AUDIO_S16, 2, 4096) == -1) {
+//        log.LogMessage("Error", "Sound system could not be initialized.");
+//        Shutdown();
+//        return -1;
+//    }
     SDL_MIXER = true;
     log.LogMessage("Success", "SDL successfully started.");
-
-    /* Set the window icon, if it exists */
-    SDL_Surface* icon = SDL_LoadBMP("icon.bmp");
-    if (icon != NULL) {
-        opt_icon = SDL_DisplayFormatAlpha(icon);
-        SDL_FreeSurface(icon);
-        SDL_WM_SetIcon(opt_icon, NULL);
-    }
 
     if (graphics.Initialize() == -1) {
         log.LogMessage("Error", "Graphics system could not be initialized.");

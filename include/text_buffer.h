@@ -15,11 +15,11 @@ namespace Polymorphic {
 
     class TextBuffer {
         public:
-            TextBuffer(Font *f, char *text);
+            TextBuffer(Font *f, string text);
             TextBuffer();
             ~TextBuffer();
 
-            void SetDisplayText(char *text);
+            void SetDisplayText(string text);
             void SetDisplayFont(Font *f);
             void SetFontSize(int size);
             void SetTextColor(Color c);
@@ -27,8 +27,8 @@ namespace Polymorphic {
             Texture* GetBuffer();
             float GetScaleFactor();
             int GetFontSize();
-            char* GetText();
-            const char* GetFontName();
+            string GetText();
+            string GetFontName();
 
         private:
             inline void UpdateBuffer();
@@ -36,7 +36,7 @@ namespace Polymorphic {
             Color c;
             Font *f;
             Texture *t;
-            char *text;
+            string text;
             int size;
             bool dirty;
     };

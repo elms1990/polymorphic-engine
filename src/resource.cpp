@@ -5,11 +5,17 @@
  */
 #include "resource.h"
 #include "log.h"
+#include "engine.h"
 
 using namespace Polymorphic;
 
 /* Resource implementation */
-Resource::Resource(void* res, const char* name) {
+Resource::Resource() {
+    res = NULL;
+    name = "";
+}
+
+Resource::Resource(void *res, string name) {
     this->res = res;
     this->name = name;
 }
@@ -18,66 +24,91 @@ Resource::~Resource() {
 
 }
 
+void* Resource::GetResource() {
+    return res;
+}
+
+void Resource::SetResource(void *res) {
+    this->res = res;
+}
+
+string Resource::GetName() {
+    return name;
+}
+
+void Resource::SetName(string name) {
+    this->name = name;
+}
+
 /* Texture implementation */
-Texture::Texture(SDL_Surface* sfc, const char* name) :
-    Resource((void*)sfc, name) {
-    Width = sfc->w;
-    Height = sfc->h;
-    SurfaceToTexture();
+Texture::Texture() : Resource() {
 }
 
 Texture::~Texture() {
     if (res != NULL) {
+        SDL_DestroyTexture((SDL_Texture*)res);
+    }
+}
+
+int Texture::GetWidth() {
+    int w;
+
+    SDL_QueryTexture((SDL_Texture*)res, NULL, NULL, &w, NULL);
+
+    return w;
+}
+
+int Texture::GetHeight() {
+    int h;
+
+    SDL_QueryTexture((SDL_Texture*)res, NULL, NULL, NULL, &h);
+
+    return h;
+}
+
+Texture* Texture::CreateTextureFromImage(Image *img) {
+    Texture *txt = new Texture();
+    txt->SetResource(SDL_CreateTextureFromSurface(Engine::graphics.renderer,
+                (SDL_Surface*)img->GetResource()));
+    txt->SetName(img->GetName());
+
+    return txt;
+}
+
+Image::Image() : Resource() {
+}
+
+Image::~Image() {
+    if (res != NULL) {
         SDL_FreeSurface((SDL_Surface*)res);
-        glDeleteTextures(1, &tid);
     }
 }
 
-void Texture::SurfaceToTexture() {
-    GLuint tid;;
-    GLenum texture_format;
-    GLint ncolors;
-    SDL_Surface* s = (SDL_Surface*)res;
-
-    /* Convert SDL_Surface to OpenGL Texture */
-    ncolors = s->format->BytesPerPixel;
-    if (ncolors == 4) {
-        //alpha channel
-        if (s->format->Rmask == 0x000000ff)
-            texture_format = GL_RGBA;
-        else
-            texture_format = GL_BGRA;
-    } else {
-        if (ncolors == 3) {
-            //no alpha channel
-            if (s->format->Rmask == 0x000000ff)
-                texture_format = GL_RGB;
-            else
-                texture_format = GL_BGR;
-        } else {
-            return;
-        }
-    }
-
-    glGenTextures(1, &tid);
-    glBindTexture(GL_TEXTURE_2D, tid);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, ncolors, s->w, s->h, 0,
-                texture_format, GL_UNSIGNED_BYTE, s->pixels);
-
-    this->tid = tid;
+Image* Image::LoadImage(string path) {
+    return (new Image())->InternalLoadImage(path);
 }
 
-GLuint Texture::GetID() {
-    return tid;
+Image* Image::InternalLoadImage(string path) {
+    SDL_Surface* text = IMG_Load(path.c_str());
+
+    if (text != NULL) {
+        res = (void*)text;
+        return this;
+    }
+
+    return NULL;
+}
+
+int Image::GetWidth() {
+    return ((SDL_Surface*)res)->w;
+}
+
+int Image::GetHeight() {
+    return ((SDL_Surface*)res)->h;
 }
 
 /* Font implementation */
-Font::Font(TTF_Font* ft, const char* name, int size) : Resource((void*)ft, name) {
+Font::Font(TTF_Font* ft, string name, int size) : Resource((void*)ft, name) {
     font_size = size;
 }
 
@@ -93,7 +124,7 @@ int Font::GetFontSize() {
 }
 
 /* SoundEffect implementation */
-SoundEffect::SoundEffect(Mix_Chunk* snd, const char* name) : Resource((void*)snd, name) {
+SoundEffect::SoundEffect(Mix_Chunk* snd, string name) : Resource((void*)snd, name) {
     SetVolume(0.5f);
     playing = false;
     halted = false;
@@ -159,7 +190,7 @@ void SoundEffect::Stop() {
 }
 
 /* Music implementation */
-Music::Music(Mix_Music* music, const char* name) : Resource((void*)music, name) {
+Music::Music(Mix_Music* music, string name) : Resource((void*)music, name) {
     SetVolume(0.5f);
     playing = false;
     halted = false;

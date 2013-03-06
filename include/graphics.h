@@ -8,13 +8,15 @@
 #ifndef __GRAPHICS_H__
 #define __GRAPHICS_H__
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_opengl.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "resource.h"
 #include "rectanglef.h"
 #include "color.h"
 #include "text_buffer.h"
+#include <string>
+
+using std::string;
 
 namespace Polymorphic {
 
@@ -73,7 +75,7 @@ namespace Polymorphic {
              *      @text: New window title.
              * @return: Nothing.
              */
-            void SetWindowTitle(const char* text);
+            void SetWindowTitle(string text);
 
             /* @name: ResizeWindow.
              * @descr: Resizes the window.
@@ -96,21 +98,14 @@ namespace Polymorphic {
             void Flush();
             
             /* @name: Clear
-             * @descr: Clears the screen. The color can be
-             * set by using SetClearColor method.
+             * @descr: Clears the screen.
              * @params: None.
              * @return: Nothing.
              */
             void Clear();
 
-            /* @name: SetClearColor
-             * @descr: Sets the screen cleaning color.
-             * @params:
-             *      @c: New screen color.
-             * @return: Nothing.
-             */
-            void SetClearColor(Color c);
- 
+            void SetRenderColor(Color c);
+
             /* @name: Initialize
              * @descr: Start up the Rendering engine;
              * @params: None.
@@ -119,13 +114,15 @@ namespace Polymorphic {
              */           
             int Initialize();
 
-            //Getters
-            int GetWidth() { return width; }
-            int GetHeight() { return height; }
+            void Shutdown();
+
+            int GetWidth();
+            int GetHeight();
 
         private:
-            Color c;
-            SDL_Surface* scr;
+            friend Texture* Texture::CreateTextureFromImage(Image *img);
+            SDL_Window *window;
+            SDL_Renderer *renderer;
             int width;
             int height;
 
@@ -134,7 +131,7 @@ namespace Polymorphic {
             float sh;
 
             /* @name: CreateContext
-             * @descr: Creates a new OpenGL context.
+             * @descr: Creates a new Window.
              * @params:
              *      @w: Window width;
              *      @h: Window height;
