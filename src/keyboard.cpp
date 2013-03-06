@@ -121,16 +121,16 @@ void Keyboard::RemapKey(string virtual_name, Keys new_key) {
 
 int Keyboard::Initialize() {
     LoadMappingFromFile(mapping_fpath);
-//    if (!LoadMappingFromFile(mapping_fpath)) {
-//        LoadDefaultKeyMapping();
-//        SaveMappingToFile(mapping_fpath);
-//    }
+    if (!LoadMappingFromFile(mapping_fpath)) {
+        LoadDefaultKeyMapping();
+        SaveMappingToFile(mapping_fpath);
+    }
 
     return 0;
 }
 
-bool Keyboard::LoadMappingFromFile(const char* file) {
-    ifstream f(file);
+bool Keyboard::LoadMappingFromFile(string file) {
+    ifstream f(file.c_str());
 
     if (f.is_open()) {
         int k;
@@ -152,8 +152,8 @@ bool Keyboard::LoadMappingFromFile(const char* file) {
     return false;
 }
 
-void Keyboard::SaveMappingToFile(const char* file) {
-    ofstream f(file);
+void Keyboard::SaveMappingToFile(string file) {
+    ofstream f(file.c_str());
 
     if (f.is_open()) {
         for (map<string, Keys, _strhack>::iterator it = mapping.begin();

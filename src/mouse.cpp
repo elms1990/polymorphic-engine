@@ -98,8 +98,8 @@ void Mouse::LoadDefaultButtonMapping() {
     mapping["action3"] = RightButton;
 }
 
-void Mouse::SaveMappingToFile(const char* file) {
-    ofstream off(file);
+void Mouse::SaveMappingToFile(string file) {
+    ofstream off(file.c_str());
 
     if (off.is_open()) {
         for (map<string, MouseButton, _strhack>::iterator it = mapping.begin();
@@ -114,8 +114,8 @@ void Mouse::SaveMappingToFile(const char* file) {
     }
 }
 
-bool Mouse::LoadMappingFromFile(const char* file) {
-    ifstream f(file);
+bool Mouse::LoadMappingFromFile(string file) {
+    ifstream f(file.c_str());
 
     if (f.is_open()) {
         int k;

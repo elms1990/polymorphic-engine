@@ -33,8 +33,8 @@ namespace Polymorphic {
             int Initialize();
             void Shutdown();
 
-            void SaveMappingToFile(const char* file);
-            bool LoadMappingFromFile(const char* file);
+            void SaveMappingToFile(string file);
+            bool LoadMappingFromFile(string file);
 
             void LoadDefaultButtonMapping();
 
@@ -46,7 +46,7 @@ namespace Polymorphic {
             int X, Y;
 
         private:
-            const char *mapping_fpath;
+            string mapping_fpath;
             map<string, MouseButton, _strhack> mapping;
             InputState *newIS, *oldIS;
 

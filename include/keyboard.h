@@ -30,8 +30,8 @@ namespace Polymorphic {
             int Initialize();
             void Shutdown();
 
-            void SaveMappingToFile(const char* file);
-            bool LoadMappingFromFile(const char* file);
+            void SaveMappingToFile(string file);
+            bool LoadMappingFromFile(string file);
 
             void LoadDefaultKeyMapping();
 
@@ -41,7 +41,7 @@ namespace Polymorphic {
             bool GetMapped(string virtual_name, Keys& mapped);
 
         private:
-            const char *mapping_fpath;
+            string mapping_fpath;
             map<string, Keys, _strhack> mapping;
             InputState *newIS, *oldIS;
     };
