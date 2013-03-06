@@ -31,6 +31,8 @@ void HW::Render() {
                         tex->GetWidth(), tex->GetHeight()), Rectanglef(x, y, tex->GetWidth(), tex->GetHeight()));
         }
     }
+
+    Engine::graphics.DrawText(hello, 121, 121);
 }
 
 void HW::Shutdown() {

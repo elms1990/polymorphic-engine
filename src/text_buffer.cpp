@@ -64,10 +64,11 @@ void TextBuffer::UpdateBuffer() {
             text.c_str(), scl);
 
     if (txt != NULL) {
+        Image img;
+        img.SetResource((void*)txt);
         if (t != NULL)
             delete t;
-        t = new Texture();
-        t->SetResource((void*)txt);
+        t = Texture::CreateTextureFromImage(&img);
         dirty = false;
     }
     
