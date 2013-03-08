@@ -75,7 +75,7 @@ int Engine::Initialize() {
     }
 
     /* Initializes SDL2 libs and dependencies */
-    if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
         log.LogMessage("Error", "SDL2 error. Could not initialize lib.");
         Shutdown();
         return -1;
@@ -97,11 +97,11 @@ int Engine::Initialize() {
     }
     SDL_IMG = true;
 
-//    if (Mix_Init(MIX_INIT_MP3) == -1 || Mix_OpenAudio(22050, AUDIO_S16, 2, 4096) == -1) {
-//        log.LogMessage("Error", "Sound system could not be initialized.");
-//        Shutdown();
-//        return -1;
-//    }
+    if (Mix_Init(MIX_INIT_MP3) == -1 || Mix_OpenAudio(22050, AUDIO_S16, 2, 4096) == -1) {
+        log.LogMessage("Error", "Sound system could not be initialized.");
+        Shutdown();
+        return -1;
+    }
     SDL_MIXER = true;
     log.LogMessage("Success", "SDL successfully started.");
 

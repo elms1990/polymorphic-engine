@@ -51,17 +51,19 @@ Texture::~Texture() {
 }
 
 int Texture::GetWidth() {
-    int w;
+    int w, h, access;
+    Uint32 format;
 
-    SDL_QueryTexture((SDL_Texture*)res, NULL, NULL, &w, NULL);
+    SDL_QueryTexture((SDL_Texture*)res, &format, &access, &w, &h);
 
     return w;
 }
 
 int Texture::GetHeight() {
-    int h;
+    int w, h, access;
+    Uint32 format;
 
-    SDL_QueryTexture((SDL_Texture*)res, NULL, NULL, NULL, &h);
+    SDL_QueryTexture((SDL_Texture*)res, &format, &access, &w, &h);
 
     return h;
 }

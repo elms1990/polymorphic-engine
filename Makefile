@@ -43,5 +43,5 @@ w32-engine:
 
 clean:
 	rm -f *.o
-	rm -f *.a
+	rm -f *.so
 	rm -f log.txt

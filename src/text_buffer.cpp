@@ -69,6 +69,7 @@ void TextBuffer::UpdateBuffer() {
         if (t != NULL)
             delete t;
         t = Texture::CreateTextureFromImage(&img);
+//        SDL_FreeSurface(txt);
         dirty = false;
     }
     
