@@ -75,7 +75,7 @@ int Engine::Initialize() {
     }
 
     /* Initializes SDL2 libs and dependencies */
-    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
         log.LogMessage("Error", "SDL2 error. Could not initialize lib.");
         Shutdown();
         return -1;

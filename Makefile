@@ -21,7 +21,7 @@ LLDFLAGS= $(LDFLAGS)
 W32CXX= i586-mingw32msvc-g++
 W32LINKER= i586-mingw32msvc-ar
 W32CXXFLAGS= $(CXXFLAGS)
-W32LDFLAGS= -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lGL
+W32LDFLAGS= -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 linux: linux-engine
 
@@ -39,7 +39,6 @@ w32-engine:
 	@echo
 	@echo \#\#\# COMPILING ENGINE FOR WIN32\#\#\#
 	$(W32CXX) $(SRC) -c $(W32CXXFLAGS) $(INCLUDE) $(W32LDFLAGS)
-	$(W32LINKER) cq $(LIBNAME) *.o
 
 clean:
 	rm -f *.o

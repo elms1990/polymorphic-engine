@@ -1,0 +1,5 @@
+action=29
+down=81
+left=80
+right=79
+up=82

@@ -22,8 +22,8 @@ W32LDFLAGS= -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -Wl,-sub
 
 linux:
 	@echo
-	@echo \#\#\# COMPILING HELLO WORLD FOR LINUX \#\#\#
-		$(LCXX) $(SRC) -o hw.o $(CXXFLAGS) $(INCLUDE) -lpolymorphic
+	@echo \#\#\# COMPILING Component Test FOR LINUX \#\#\#
+	$(LCXX) $(SRC) -o cmp.o $(CXXFLAGS) $(INCLUDE) -lpolymorphic
 
 w32: 
 	@echo
