@@ -2,7 +2,11 @@
 #include <string.h>
 
 GameObject::GameObject() {
+    name = "";
+}
 
+GameObject::GameObject(string name) {
+    this->name = name;
 }
 
 GameObject::~GameObject() {
@@ -34,4 +38,12 @@ void GameObject::Update() {
             it != cps.end(); it++) {
         (*it)->Execute();
     }
+}
+
+string GameObject::GetName() {
+    return name;
+}
+
+void GameObject::SetName(string name) {
+    this->name = name;
 }

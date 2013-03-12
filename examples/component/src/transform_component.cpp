@@ -2,6 +2,8 @@
 
 TransformComponent::TransformComponent(GameObject *go) : Component("Transform") {
     this->go = go;
+    w = 0;
+    h = 0;
     x = 0.f;
     y = 0.f;
     sx = 1.f;

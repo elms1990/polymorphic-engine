@@ -14,6 +14,8 @@ class TransformComponent : public Component {
 
         float x;
         float y;
+        int w;
+        int h;
         float sx;
         float sy;
         float rot;

@@ -21,16 +21,16 @@ void InputComponent::Execute() {
     InputState *iS = Engine::keyboard.GetState();
 
     if (iS->IsButtonDown("up")) {
-        tc->y -= 5.f;
+        tc->y -= 100.f*Engine::GetElapsedTime()/1000.f;
     }
     if (iS->IsButtonDown("left")) {
-        tc->x -= 5.f;
+        tc->x -= 100.f*Engine::GetElapsedTime()/1000.f;
     }
 
     if (iS->IsButtonDown("right")) {
-        tc->x += 5.f;
+        tc->x += 100.f*Engine::GetElapsedTime()/1000.f;
     }
     if (iS->IsButtonDown("down")) {
-        tc->y += 5.f;
+        tc->y += 100.f*Engine::GetElapsedTime()/1000.f;
     }
 }

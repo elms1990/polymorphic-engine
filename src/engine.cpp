@@ -1,6 +1,7 @@
 #include "engine.h"
 using namespace Polymorphic;
 
+int Engine::elapsed = 0;
 bool Engine::SDL_INIT = false;
 bool Engine::SDL_IMG = false;
 bool Engine::SDL_TTF = false;
@@ -156,6 +157,8 @@ void Engine::Run(GameIF *gi) {
             }
         }
 
+        elapsed = deltaT;
+
         /* UPDATE GAME STUFF HERE */
         Update(deltaT);
 
@@ -201,4 +204,8 @@ void Engine::StartOnFullScreen(bool b) {
 void Engine::SetFrameRateCap(int fps) {
     if (fps > 0)
         eat.fps = fps;
+}
+
+int Engine::GetElapsedTime() {
+    return elapsed;
 }

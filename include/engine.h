@@ -97,6 +97,8 @@ namespace Polymorphic {
             static ContentManager cmanager;
             static Log log;
 
+            static int GetElapsedTime();
+
         private:
             static int Initialize();
             static void Update(int deltaTime);
@@ -110,6 +112,7 @@ namespace Polymorphic {
             static bool SDL_MIXER;
             static bool LOG;
             static bool initialized;
+            static int elapsed;
 
             static GameIF *game;
     };

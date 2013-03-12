@@ -10,10 +10,14 @@ using std::string;
 
 class GameObject {
     public:
+        GameObject(string name);
         GameObject();
         ~GameObject();
 
         void Initialize();
+
+        string GetName();
+        void SetName(string name);
 
         void AddComponent(Component *c);
         Component* GetComponent(string name);
@@ -21,6 +25,7 @@ class GameObject {
 
     private:
         list<Component*> cps;
+        string name;
 };
 
 #endif
