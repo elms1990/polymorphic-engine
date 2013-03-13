@@ -3,6 +3,7 @@
 #include "input_component.h"
 #include "render_component.h"
 #include "transform_component.h"
+#include "fps_component.h"
 
 using namespace Polymorphic;
 
@@ -18,6 +19,7 @@ int CMP::Initialize() {
     go->AddComponent(new RenderComponent(go));
     go->AddComponent(new TransformComponent(go));
     go->AddComponent(new InputComponent(go));
+    go->AddComponent(new FpsComponent());
 
     stuff.push_back(go);
 
