@@ -15,6 +15,9 @@ using namespace Polymorphic;
 
 #define DEFAULT_WINDOW_FLAGS (SDL_WINDOW_SHOWN)
 #define DEFAULT_RENDERER_FLAGS (SDL_RENDERER_ACCELERATED)
+#define DEFAULT_VIEWPORT_WIDTH 600
+#define DEFAULT_VIEWPORT_HEIGHT 600
+#define DEFAULT_FSCREEN_MODE false
 
 Graphics::Graphics() {
     window = NULL;
@@ -23,6 +26,9 @@ Graphics::Graphics() {
     sh = 0.f;
     width = 0;
     height = 0;
+    fs = DEFAULT_FSCREEN_MODE;
+    vw = DEFAULT_VIEWPORT_WIDTH;
+    vh = DEFAULT_VIEWPORT_HEIGHT;
 }
 
 Graphics::~Graphics() {
@@ -30,9 +36,9 @@ Graphics::~Graphics() {
 }
 
 int Graphics::Initialize() {
-    EngineAttributes eat = Engine::GetAttributes();
-    if (CreateContext(eat.width, eat.height, eat.fullscreen) == -1)
+    if (CreateContext(vw, vh) == -1)
         return -1;
+    SetWindowFullscreen(fs);
 
     Engine::log.LogMessage("Success", "Graphics engine successfully started.");
 
@@ -47,6 +53,8 @@ void Graphics::SetWindowSize(int w, int h) {
     width = w;
     height = h;
     SDL_SetWindowSize(window, w, h);
+    sw = (float)w/vw;
+    sh = (float)h/vh;
 }
 
 void Graphics::SetWindowIcon(Image *img) {
@@ -54,14 +62,22 @@ void Graphics::SetWindowIcon(Image *img) {
 }
 
 void Graphics::SetWindowFullscreen(bool fs) {
-    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+    if ((!this->fs && fs)) {
+        this->fs = fs;
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); 
+    } else {
+        if (this->fs && !fs) {
+            this->fs = fs;
+            SDL_SetWindowFullscreen(window, 0x0); 
+        }
+    }
 }
 
 void Graphics::Draw(Texture *src, Rectanglef src_rect, Rectanglef dst_rect) {
     SDL_Rect sr = { sr.x = src_rect.X, sr.y = src_rect.Y,sr.w = src_rect.Width,
         sr.h = src_rect.Height };
-    SDL_Rect dr = { dr.x = dst_rect.X, dr.y = dst_rect.Y,dr.w = dst_rect.Width,
-        dr.h = dst_rect.Height };
+    SDL_Rect dr = { dr.x = dst_rect.X*sw, dr.y = dst_rect.Y*sh,dr.w = dst_rect.Width*sw,
+        dr.h = dst_rect.Height*sh };
 
     SDL_RenderCopy(renderer, (SDL_Texture*)src->GetResource(), &sr, &dr);
 }
@@ -109,7 +125,7 @@ int Graphics::GetHeight() {
     return height;
 }
 
-int Graphics::CreateContext(int w, int h, bool fscreen) {
+int Graphics::CreateContext(int w, int h) {
     window = SDL_CreateWindow("",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
@@ -122,19 +138,25 @@ int Graphics::CreateContext(int w, int h, bool fscreen) {
         Engine::log.LogMessage("Error", "Failed to set up a Window...");
         return -1;
     }
-//    SDL_GetWindowSize(window, &width, &height);
+    int a,b;
+    SDL_GetWindowSize(window, &a, &b);
     width = w;
     height = h;
-//    printf("w: %d, h: %d\n", w, h);
-//    printf("ww>%d wh> %d\n", width, height);
+    sw = GetViewportWidth()/w;
+    sh = GetViewportHeight()/h;
 
     return 0;
 }
 
 int Graphics::GetViewportWidth() {
-    return Engine::GetAttributes().width;
+    return vw;
 }
 
 int Graphics::GetViewportHeight() {
-    return Engine::GetAttributes().height;
+    return vh;
+}
+
+void Graphics::SetViewportSize(int w, int h) {
+    vw = w;
+    vh = h;
 }

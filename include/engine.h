@@ -30,13 +30,6 @@
 
 namespace Polymorphic {
 
-    typedef struct _eattrib {
-        int width;
-        int height;
-        bool fullscreen;
-        int fps;
-    } EngineAttributes;
-
     class Engine {
         public:
             /* @name: Run
@@ -55,24 +48,6 @@ namespace Polymorphic {
              */
             static bool Initialized();
 
-            /* @name: SetViewport
-             * @descr: Sets the viewport size.
-             * @params:
-             *      @width: viewport's width.
-             *      @height: viewport's height.
-             * @return: Nothing.
-             */
-            static void SetViewport(int width, int height);
-
-            /* @name: StartOnFullScreen
-             * @descr: Enable/Disable the window initializing in fullscreen
-             * mode.
-             * @params: 
-             *      b: Flag to enable/disable fullscreen mode.
-             * @return: Nothing.
-             */
-            static void StartOnFullScreen(bool b);
-
             /* @name: SetFrameRateCap
              * @descr: Sets the frame rate upper limit.
              * @params:
@@ -81,14 +56,6 @@ namespace Polymorphic {
              * @return: Nothing.
              */
             static void SetFrameRateCap(int fps);
-
-            /* @name: GetAttributes
-             * @descr: Retrieves the engine settings.
-             * @params: None.
-             * @return: Struct containing the engine's
-             * objects.
-             */
-            static EngineAttributes GetAttributes();
 
             /* Engine modules */
             static Graphics graphics;
@@ -105,7 +72,6 @@ namespace Polymorphic {
             static void Render();
             static void Shutdown();
 
-            static EngineAttributes eat;
             static bool SDL_INIT;
             static bool SDL_IMG;
             static bool SDL_TTF;
@@ -113,6 +79,7 @@ namespace Polymorphic {
             static bool LOG;
             static bool initialized;
             static int elapsed;
+            static int fps;
 
             static GameIF *game;
     };

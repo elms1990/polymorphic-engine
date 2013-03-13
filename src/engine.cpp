@@ -1,4 +1,7 @@
 #include "engine.h"
+
+#define DEFAULT_FPS 60
+
 using namespace Polymorphic;
 
 int Engine::elapsed = 0;
@@ -9,7 +12,7 @@ bool Engine::SDL_MIXER = false;
 bool Engine::LOG = false;
 bool Engine::initialized = false;
 GameIF* Engine::game = NULL;
-EngineAttributes Engine::eat = { 800, 600, false, 60 };
+int Engine::fps = DEFAULT_FPS;
 
 /* Modules */
 Graphics Engine::graphics;
@@ -169,8 +172,8 @@ void Engine::Run(GameIF *gi) {
         graphics.Flush();
         
         /* Cap the fps */
-        if (t.GetTicks() < (1000.f/eat.fps)) {
-            SDL_Delay((1000.f/eat.fps) - t.GetTicks());
+        if (t.GetTicks() < (1000.f/fps)) {
+            SDL_Delay((1000.f/fps) - t.GetTicks());
         }
 
         deltaT = t.GetTicks();
@@ -186,24 +189,9 @@ bool Engine::Initialized() {
     return initialized;
 }
 
-EngineAttributes Engine::GetAttributes() {
-    return eat;
-}
-
-void Engine::SetViewport(int width, int height) {
-    if (width > 0 && height > 0) {
-        eat.width = width;
-        eat.height = height;
-    }
-}
-
-void Engine::StartOnFullScreen(bool b) {
-    eat.fullscreen = b;
-}
-
 void Engine::SetFrameRateCap(int fps) {
     if (fps > 0)
-        eat.fps = fps;
+        Engine::fps = fps;
 }
 
 int Engine::GetElapsedTime() {

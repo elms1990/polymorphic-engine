@@ -96,6 +96,8 @@ namespace Polymorphic {
              */
             void SetWindowFullscreen(bool fs);
 
+            void SetViewportSize(int w, int h);
+
             /* @name: SetWindowIcon
              * @descr: Changes the window icon.
              * @params:
@@ -179,19 +181,24 @@ namespace Polymorphic {
             int width;
             int height;
 
-            //scale factors base on default screen dimensions
+            //window scaling factors.
+            //window_size/viewport_size
             float sw;
             float sh;
+
+            //viewport width/height
+            int vw;
+            int vh;
+            bool fs;
 
             /* @name: CreateContext
              * @descr: Creates a new Window.
              * @params:
              *      @w: Window width;
              *      @h: Window height;
-             *      @fscreen: Switch to full screen mode.
              * @return: Zero if success. Non-zero, otherwise.
              */
-            int CreateContext(int w, int h, bool fscreen);
+            int CreateContext(int w, int h);
     };
 }
 #endif /* __GRAPHICS_H__ */
