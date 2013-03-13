@@ -100,6 +100,11 @@ int Graphics::GetHeight() {
 }
 
 int Graphics::CreateContext(int w, int h, bool fscreen) {
+
+    if (renderer != NULL)
+        SDL_DestroyRenderer(renderer);
+    if (window != NULL)
+        SDL_DestroyWindow(window);
     window = SDL_CreateWindow("",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
@@ -115,4 +120,12 @@ int Graphics::CreateContext(int w, int h, bool fscreen) {
     SDL_GetWindowSize(window, &width, &height);
 
     return 0;
+}
+
+int Graphics::GetViewportWidth() {
+    return Engine::GetAttributes().width;
+}
+
+int Graphics::GetViewportHeight() {
+    return Engine::GetAttributes().height;
 }

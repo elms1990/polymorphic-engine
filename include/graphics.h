@@ -118,6 +118,8 @@ namespace Polymorphic {
 
             int GetWidth();
             int GetHeight();
+            int GetViewportWidth();
+            int GetViewportHeight();
 
         private:
             friend Texture* Texture::CreateTextureFromImage(Image *img);
