@@ -92,10 +92,18 @@ namespace Polymorphic {
              * @params:
              *      @fs: True for enabling fullscreen
              * mode and false for disabling.
+             * @return: 0 if window mode was successfuly
+             * changed. -1 on error.
+             */
+            int SetWindowFullscreen(bool fs);
+
+            /* @name: SetViewportSize
+             * @descr: Sets the window viewport.
+             * @params:
+             *      @w: Viewport width.
+             *      @h: Viewport height.
              * @return: Nothing.
              */
-            void SetWindowFullscreen(bool fs);
-
             void SetViewportSize(int w, int h);
 
             /* @name: SetWindowIcon

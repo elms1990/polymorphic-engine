@@ -61,16 +61,18 @@ void Graphics::SetWindowIcon(Image *img) {
     SDL_SetWindowIcon(window, (SDL_Surface*)img->GetResource());
 }
 
-void Graphics::SetWindowFullscreen(bool fs) {
+int Graphics::SetWindowFullscreen(bool fs) {
     if ((!this->fs && fs)) {
         this->fs = fs;
-        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); 
+        return SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
     } else {
         if (this->fs && !fs) {
             this->fs = fs;
-            SDL_SetWindowFullscreen(window, 0x0); 
+            return SDL_SetWindowFullscreen(window, 0x0);
         }
     }
+
+    return 0;
 }
 
 void Graphics::Draw(Texture *src, Rectanglef src_rect, Rectanglef dst_rect) {
