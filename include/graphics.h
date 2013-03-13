@@ -189,11 +189,6 @@ namespace Polymorphic {
             int width;
             int height;
 
-            //window scaling factors.
-            //window_size/viewport_size
-            float sw;
-            float sh;
-
             //viewport width/height
             int vw;
             int vh;
