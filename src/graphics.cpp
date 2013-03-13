@@ -83,7 +83,7 @@ void Graphics::Clear() {
 }
 
 void Graphics::SetRenderColor(Color c) {
-    SDL_SetRenderDrawColor(renderer, c.Red, c.Blue, c.Green, c.Alpha);
+    SDL_SetRenderDrawColor(renderer, c.Red, c.Green, c.Blue, c.Alpha);
 }
 
 void Graphics::Shutdown() {
