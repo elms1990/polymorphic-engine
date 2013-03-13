@@ -94,8 +94,15 @@ namespace Polymorphic {
              * mode and false for disabling.
              * @return: Nothing.
              */
- 
             void SetWindowFullscreen(bool fs);
+
+            /* @name: SetWindowIcon
+             * @descr: Changes the window icon.
+             * @params:
+             *      @img: A pointer to an image.
+             * @return: Nothing.
+             */
+            void SetWindowIcon(Image *img);
 
             /* @name: Flush
              * @descr: Updates the screen, displaying recently

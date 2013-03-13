@@ -49,6 +49,10 @@ void Graphics::SetWindowSize(int w, int h) {
     SDL_SetWindowSize(window, w, h);
 }
 
+void Graphics::SetWindowIcon(Image *img) {
+    SDL_SetWindowIcon(window, (SDL_Surface*)img->GetResource());
+}
+
 void Graphics::SetWindowFullscreen(bool fs) {
     SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 }

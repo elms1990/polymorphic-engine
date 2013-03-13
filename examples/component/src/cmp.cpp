@@ -21,6 +21,9 @@ int CMP::Initialize() {
     go->AddComponent(new InputComponent(go));
     go->AddComponent(new FpsComponent());
 
+    Engine::graphics.SetWindowIcon(Engine::cmanager.LoadImage("icon", "img/he.png"));
+
+
     stuff.push_back(go);
 
     TransformComponent *tc = (TransformComponent*)go->GetComponent("Transform");
