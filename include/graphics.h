@@ -104,6 +104,11 @@ namespace Polymorphic {
              */
             void Clear();
 
+            /* @name: Clear
+             * @descr: Clears the screen.
+             * @params: None.
+             * @return: Nothing.
+             */
             void SetRenderColor(Color c);
 
             /* @name: Initialize
@@ -114,11 +119,42 @@ namespace Polymorphic {
              */           
             int Initialize();
 
+            /* @name: Shutdown
+             * @descr: Shuts down the rendering system
+             * destroying the game window.
+             * @params: None.
+             * @return: Nothing.
+             */
             void Shutdown();
 
+            /* @name: GetWidth
+             * @descr: Get window width.
+             * @params: None.
+             * @return: Window width in pixels.
+             */
             int GetWidth();
+
+            /* @name: GetHeight
+             * @descr: Get window height.
+             * @params: None.
+             * @return: Window height in pixels.
+             */
             int GetHeight();
+
+            /* @name: GetViewportWidth
+             * @descr: Get the logical window
+             * width.
+             * @params: None.
+             * @return: Logical size in pixels.
+             */
             int GetViewportWidth();
+
+            /* @name: GetViewportHeight
+             * @descr: Get the height from the logical
+             * window.
+             * @params: None.
+             * @return: Logical size in pixels.
+             */
             int GetViewportHeight();
 
         private:
