@@ -8,6 +8,7 @@
 #include "engine.h"
 #include <SDL2/SDL.h>
 #include <string>
+#include <stdio.h>
 
 using std::string;
 using namespace Polymorphic;
@@ -42,11 +43,14 @@ void Graphics::SetWindowTitle(string title) {
     SDL_SetWindowTitle(window, title.c_str());
 }
 
-bool Graphics::ResizeWindow(int new_w, int new_h, bool full_screen) {
+void Graphics::SetWindowSize(int w, int h) {
+    width = w;
+    height = h;
+    SDL_SetWindowSize(window, w, h);
+}
 
-    if (CreateContext(new_w, new_h, full_screen) == -1)
-        return false;
-    return true;
+void Graphics::SetWindowFullscreen(bool fs) {
+    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 }
 
 void Graphics::Draw(Texture *src, Rectanglef src_rect, Rectanglef dst_rect) {
@@ -87,8 +91,10 @@ void Graphics::SetRenderColor(Color c) {
 }
 
 void Graphics::Shutdown() {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    if (renderer != NULL)
+        SDL_DestroyRenderer(renderer);
+    if (window != NULL)
+        SDL_DestroyWindow(window);
 }
 
 int Graphics::GetWidth() {
@@ -100,11 +106,6 @@ int Graphics::GetHeight() {
 }
 
 int Graphics::CreateContext(int w, int h, bool fscreen) {
-
-    if (renderer != NULL)
-        SDL_DestroyRenderer(renderer);
-    if (window != NULL)
-        SDL_DestroyWindow(window);
     window = SDL_CreateWindow("",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
@@ -117,7 +118,11 @@ int Graphics::CreateContext(int w, int h, bool fscreen) {
         Engine::log.LogMessage("Error", "Failed to set up a Window...");
         return -1;
     }
-    SDL_GetWindowSize(window, &width, &height);
+//    SDL_GetWindowSize(window, &width, &height);
+    width = w;
+    height = h;
+//    printf("w: %d, h: %d\n", w, h);
+//    printf("ww>%d wh> %d\n", width, height);
 
     return 0;
 }

@@ -77,17 +77,25 @@ namespace Polymorphic {
              */
             void SetWindowTitle(string text);
 
-            /* @name: ResizeWindow.
-             * @descr: Resizes the window.
+            /* @name: SetWindowSize
+             * @descr: Sets the window size.
              * @params:
-             *      @new_w: New window width.
-             *      @new_h: New window height.
-             *      @full_screen: Toggles on/off full
-             * screen mode.
-             * @return: True whether resized correctly.
-             * False otherwise.
+             *      @w: New window width.
+             *      @h: New window height.
+             * @return: Nothing.
              */
-            bool ResizeWindow(int new_w, int new_h, bool full_screen);
+            void SetWindowSize(int w, int h);
+
+            /* @name: SetWindowFullscreen
+             * @descr: Enables/Disable fullscreen
+             * mode.
+             * @params:
+             *      @fs: True for enabling fullscreen
+             * mode and false for disabling.
+             * @return: Nothing.
+             */
+ 
+            void SetWindowFullscreen(bool fs);
 
             /* @name: Flush
              * @descr: Updates the screen, displaying recently
