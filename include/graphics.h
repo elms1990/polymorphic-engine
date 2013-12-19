@@ -196,12 +196,10 @@ namespace Polymorphic {
 
             /* @name: CreateContext
              * @descr: Creates a new Window.
-             * @params:
-             *      @w: Window width;
-             *      @h: Window height;
-             * @return: Zero if success. Non-zero, otherwise.
+             * @params: None.
+             * @return: Zero on success. Non-zero, otherwise.
              */
-            int CreateContext(int w, int h);
+            int CreateContext();
     };
 }
 #endif /* __GRAPHICS_H__ */

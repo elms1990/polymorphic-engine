@@ -8,25 +8,21 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
 
-/* Engine includes */
-#include "content_manager.h"
-#include "game_if.h"
-#include "graphics.h"
-#include "input_state.h"
-#include "keyboard.h"
-#include "keys.h"
-#include "log.h"
-#include "mouse.h"
-#include "rectanglef.h"
-#include "resource.h"
-#include "text_buffer.h"
-#include "timer.h"
-
 /* SDL includes */
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+
+/* Engine includes */
+#include "content_manager.h"
+#include "game_if.h"
+#include "graphics.h"
+#include "keyboard.h"
+#include "log.h"
+#include "mouse.h"
+#include "resource.h"
+#include "timer.h"
 
 namespace Polymorphic {
 

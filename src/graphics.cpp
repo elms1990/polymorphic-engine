@@ -15,15 +15,15 @@ using namespace Polymorphic;
 
 #define DEFAULT_WINDOW_FLAGS (SDL_WINDOW_SHOWN | SDL_WINDOWPOS_CENTERED)
 #define DEFAULT_RENDERER_FLAGS (SDL_RENDERER_ACCELERATED)
-#define DEFAULT_VIEWPORT_WIDTH 600
-#define DEFAULT_VIEWPORT_HEIGHT 600
+#define DEFAULT_VIEWPORT_WIDTH 1024
+#define DEFAULT_VIEWPORT_HEIGHT 768
 #define DEFAULT_FSCREEN_MODE false
 
 Graphics::Graphics() {
     window = NULL;
     renderer = NULL;
-    width = 0;
-    height = 0;
+    width = DEFAULT_VIEWPORT_WIDTH;
+    height = DEFAULT_VIEWPORT_HEIGHT;
     fs = DEFAULT_FSCREEN_MODE;
     vw = DEFAULT_VIEWPORT_WIDTH;
     vh = DEFAULT_VIEWPORT_HEIGHT;
@@ -34,7 +34,7 @@ Graphics::~Graphics() {
 }
 
 int Graphics::Initialize() {
-    if (CreateContext(vw, vh) == -1)
+    if (CreateContext() == -1)
         return -1;
     SetWindowFullscreen(fs);
 
@@ -123,22 +123,20 @@ int Graphics::GetHeight() {
     return height;
 }
 
-int Graphics::CreateContext(int w, int h) {
+int Graphics::CreateContext() {
     window = SDL_CreateWindow("",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
-            w, 
-            h, 
+            width, 
+            height, 
             DEFAULT_WINDOW_FLAGS);
     renderer = SDL_CreateRenderer(window, -1, DEFAULT_RENDERER_FLAGS);
-    SetViewportSize(vw, vh);
+//    SetViewportSize(vw, vh);
 
     if ((window == NULL) | (renderer == NULL)) {
         Engine::log.LogMessage("Error", "Failed to set up a Window...");
         return -1;
     }
-    width = w;
-    height = h;
 
     return 0;
 }
