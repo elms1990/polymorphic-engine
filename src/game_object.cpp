@@ -26,30 +26,45 @@ string GameObject::GetId() {
 }
 
 void GameObject::Initialize() {
-
+    for (list<GameComponent*>::iterator it = mChildren.begin();
+            it != mChildren.end(); it++) {
+        (*it)->Initialize();
+    }
 }
 
 void GameObject::Update(float timeStep) {
+    for (list<GameComponent*>::iterator it = mChildren.begin();
+            it != mChildren.end(); it++) {
+        (*it)->Update(timeStep);
+    }
 }
 
 void GameObject::Render() {
+    for (list<GameComponent*>::iterator it = mChildren.begin();
+            it != mChildren.end(); it++) {
+        (*it)->Render();
+    }
 }
 
 void GameObject::Shutdown() {
+    for (list<GameComponent*>::iterator it = mChildren.begin();
+            it != mChildren.end(); it++) {
+        (*it)->Shutdown();
+    }
 }
 
-GameObject* GameObject::AddComponent(string name, GameComponent *component) {
-    mChildren.push_back(pair<string, GameComponent*>(name, component));
+GameObject* GameObject::AddComponent(GameComponent *component) {
+    mChildren.push_back(component);
 
     return this;
 }
 
 GameComponent* GameObject::GetComponent(string name) {
-    list<pair<string, GameComponent*> >::iterator it;
+    list<GameComponent*>::iterator it;
 
     for (it = mChildren.begin(); it != mChildren.end(); it++) {
-        if (name.compare(it->first) == 0) {
-            return it->second;
+        if (name.compare((*it)->GetId()) == 0) {
+            return (*it);
         }
     }
 
@@ -57,10 +72,10 @@ GameComponent* GameObject::GetComponent(string name) {
 }
 
 GameObject* GameObject::RemoveComponent(string name) {
-    list<pair<string, GameComponent*> >::iterator it;
+    list<GameComponent*>::iterator it;
 
     for (it = mChildren.begin(); it != mChildren.end(); it++) {
-        if (name.compare(it->first) == 0) {
+        if (name.compare((*it)->GetId()) == 0) {
             mChildren.remove(*it);
             break;
         }

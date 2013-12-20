@@ -35,7 +35,7 @@ namespace Polymorphic {
             virtual void Render();
             virtual void Shutdown();
 
-            GameObject* AddComponent(string name, GameComponent *component);
+            GameObject* AddComponent(GameComponent *component);
             GameComponent* GetComponent(string name);
             GameObject* RemoveComponent(string name);
 
@@ -44,7 +44,7 @@ namespace Polymorphic {
 
         private:
             string mId;
-            list<pair<string, GameComponent*> > mChildren;
+            list<GameComponent*> mChildren;
 
             virtual void OnEvent(Event *e);
     };
